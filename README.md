@@ -22,8 +22,6 @@ Or, you can install and use **GitHub Desktop** and use the interface there.
 ---
 ## Project Guidelines
 * All code (C# or not) should be annotated with **English** comments.
-* The `master` branch is protected. Submit a **pull request** and wait for a code review.
-* Contributors should develop under the `dev` branch.
 
 ---
 ## Beatmap Helper
