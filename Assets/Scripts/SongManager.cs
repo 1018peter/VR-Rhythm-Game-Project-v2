@@ -421,56 +421,9 @@ namespace Assets.Scripts
                 string[] tokens = line.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
                 if (tokens.Length == 0) continue; // Skip empty lines.
 
-                int color_flag = 0; 
-                
-                // 1 if funCode starts with COLOR_ ex:RED_ROTATE_FORWARD_TO , 
-                // 2 if funCode ends with _COLOR ex:ORBITNOTE_FIXED_RED
-                // 0 otherwise
-                
-
                 string funcCode = tokens[0];
                 if (funcCode.StartsWith("#") || funcCode.StartsWith("//")) continue; // Skip comments.
-
-                // Instructions ROTATE_XXX_XXX and ORBITNOTE_XXX carrys a parameter color(r/g/b), may be at tokens[tokens.Length - 1]
-                // So we need to do a simple transform here
-                // For example: line_x = 'ROTATE_FORWARD_TO 3.25 2 20 g'
-                // The original funcCode will be 'ROTATE_FORWARD_TO'
-                // And it should be 'GREEN_ROTATE_FORWARD_TO' after transform
-                // For example: line_y = 'ORBITNOTE_FIXED 7.5 45 b'
-                // The original funcCode will be 'ORBITNOTE_FIXED'
-                // And it should be 'ORBITNOTE_FIXED_BLUE' after transform
-                
-
-                if(tokens[tokens.Length - 1]=='r'){
-                    if(funcCode == "ROTATE_FORWARD_TO"||funcCode == "ROTATE_FORWARD_BY"||funcCode == "ROTATE_UP_TO"||funcCode == "ROTATE_UP_BY"){
-                        funcCode = "RED_" + funcCode;
-                        color_flag = 1;
-                    }else if(funcCode == "ORBITNOTE_FIXED"||funcCode == "ORBITNOTE_MOVING"){
-                        funcCode = funcCode + "_RED";
-                        color_flag = 2;
-                    }
-                }else if(tokens[tokens.Length - 1]=='g'){
-                    if(funcCode == "ROTATE_FORWARD_TO"||funcCode == "ROTATE_FORWARD_BY"||funcCode == "ROTATE_UP_TO"||funcCode == "ROTATE_UP_BY"){
-                        funcCode = "GREEN_" + funcCode;
-                        color_flag = 1;
-                    }else if(funcCode == "ORBITNOTE_FIXED"||funcCode == "ORBITNOTE_MOVING"){
-                        funcCode = funcCode + "_GREEN";
-                        color_flag = 2;
-                    }
-                }else if(tokens[tokens.Length - 1]=='b'){
-                    if(funcCode == "ROTATE_FORWARD_TO"||funcCode == "ROTATE_FORWARD_BY"||funcCode == "ROTATE_UP_TO"||funcCode == "ROTATE_UP_BY"){
-                        funcCode = "BLUE_" + funcCode;
-                        color_flag = 1;
-                    }else if(funcCode == "ORBITNOTE_FIXED"||funcCode == "ORBITNOTE_MOVING"){
-                        funcCode = funcCode + "_BLUE";
-                        color_flag = 2;
-                    }
-                }
-                
-                // function timestamp parameters... color
-                
                 int parameterCount = tokens.Length - 1;
-                if(color_flag)parameterCount--;
                 switch (funcCode)
                 {
                     case "BPM":

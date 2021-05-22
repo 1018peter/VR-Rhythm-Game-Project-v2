@@ -107,63 +107,31 @@
     </div>
   </div>
 </div>
-<div style = 'position: fixed;top:45%;right:10px;'>
+<div style="position:fixed;right:10px;top:30%;">
   <input type="checkbox" id="showtable">
   <label for="showtable" id="checkshow" style="color:white;">Hide the Instruction Guide</label>
-</div>
-<div  id="instructionguide" style="position:fixed;right:10px;top:48%;width:65%;height:80%;">
-  
-  <div style="position: absolute;top:0%;background-color: aliceblue;border:solid black 1px;border-radius:5px ;height:60%; overflow-y:scroll;">
+  <div id="instructionguide" style="background-color: aliceblue;border:solid black 1px;border-radius:5px ;">
     <br>
-    <table >
+    <table>
       <tr>
         <th>Instruction</th>
         <th># of Parameters</th>
         <th>Parameters descriptions</th>
       </tr>
       <tr>
-        <th>ROTATE_FORWARD_TO</th>
+        <th>AIRNOTE</th>
         <th>3</th>
-        <th>rotation duration in beats, resulting rotation in degrees, color(r/g/b)</th>
+        <th>(x,y,z)</th>
       </tr>
       <tr>
-        <th>ROTATE_FORWARD_BY</th>
+        <th>BALLNOTE</th>
         <th>3</th>
-        <th>rotation duration in beats, resulting rotation in degrees, color(r/g/b)</th>
-      </tr>
-      <tr>
-        <th>ROTATE_UP_TO</th>
-        <th>3</th>
-        <th>rotation duration in beats, offset rotation in degrees, color(r/g/b)</th>
-      </tr>
-      <tr>
-        <th>ROTATE_UP_BY</th>
-        <th>3</th>
-        <th>rotation duration in beats, offset rotation in degrees, color(r/g/b)</th>
-      </tr>
-      <tr>
-        <th>ORBITNOTE_FIXED</th>
-        <th>2</th>
-        <th>position on orbit in degrees, color(r/g/b)</th>
-      </tr>
-      
-      <tr>
-        <th>ORBITNOTE_MOVING</th>
-        <th>3</th>
-        <th>start position on orbit, end position on orbit(both in degrees), color(r/g/b)</th>
-      </tr>
-      
-      <tr>
-        <th>TAPNOTE</th>
-        <th>2</th>
-        <th>X-rotation relative to origin, Z-position relative to origin</th>
+        <th>(x,y,distance(far:0/near:1))</th>
       </tr>
     </table>
-    <hr>
     <div>Seperate each parameter with a comma</div>
-    <div>ex : y=25.2, distance=0, color(r/g/b)=r</div>
-    <div>Parameters = 25.2,0,r</div>
-    
+    <div>ex : x=12.5, y=25, distance=0</div>
+    <div>Parameters = 12.5,25,0</div>
   </div>
 </div>
   <div style="color:whitesmoke"><ul id="timestampBufferList">Timestamp Buffer:</ul></div>

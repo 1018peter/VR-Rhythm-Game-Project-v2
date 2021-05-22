@@ -41,7 +41,6 @@ function init(){
     document.getElementById("upload").addEventListener("change", handleFiles, false);
     document.getElementsByTagName("body")[0].addEventListener("keydown", addTimestamp);
     document.getElementById("showtable").addEventListener("change",function(){
-        console.log("checkbox change");
         if(this.checked == true){
             document.getElementById("instructionguide").style.display = "none";
         }else{
@@ -99,7 +98,7 @@ function addTimestamp(e){
     if((e.code !== "Space" && e.code !=="KeyZ") || beatDisplayToggle.checked) return;
     if(audioPlayer.readyState >= 2){
         beatTimestamps.add(audioPlayer.currentTime);
-        instructionList.push('ROTATE_FORWARD_TO');
+        instructionList.push('AIRNOTE');
         parameterList.push('');
         while(document.getElementById("timestampBufferSize").value <= bufferSize){
             timestampBuffer.shift();
@@ -158,13 +157,7 @@ function updateList(flag = 0){
             let secPerBeat = 1 / (BPM / 60);
             let index = 0;
             for(let timestamp of beatTimestamps){
-                let instructionSelector = '<label for="instruction">Instruction:</label>\n<select name="instruction" id="instruction' + index.toString() + '"' + '><option value="ROTATE_FORWARD_TO">ROTATE_FORWARD_TO</option>\n<option value="ROTATE_FORWARD_BY">ROTATE_FORWARD_BY</option>\n<option value="ROTATE_UP_TO">ROTATE_UP_TO</option>\n<option value="ROTATE_UP_BY">ROTATE_UP_BY</option>\n';
-                                
-                instructionSelector += '<option value="ORBITNOTE_FIXED_RED">ORBITNOTE_FIXED_RED</option>\n<option value="ORBITNOTE_FIXED">ORBITNOTE_FIXED</option>\n';
-                instructionSelector += '<option value="ORBITNOTE_MOVING_RED">ORBITNOTE_MOVING_RED</option>\n<option value="ORBITNOTE_MOVING">ORBITNOTE_MOVING</option>\n';
-                instructionSelector += '<option value="TAPNOTE">TAPNOTE</option>\n';
-
-                instructionSelector += '</select>';
+                let instructionSelector = '<label for="instruction">Instruction:</label>\n<select name="instruction" id="instruction' + index.toString() + '"' + '><option value="AIRNOTE">AIRNOTE</option>\n<option value="BALLNOTE">BALLNOTE</option>\n</select>';
                 let parameter = '<label for="parameter"style="margin-left:3px;margin-right:3px;">Parameters:</label><input type="text" id="parameter' + index.toString() + '" name="parameter"  cols="3" style="resize:none;overflow-y:hidden;">';
                 
                 listdata += `<li id=${timestamp} onclick="removeTimestamp(${timestamp});">${(Math.floor(timestamp / secPerBeat*4)/4).toFixed(2)}</li>`;
@@ -178,14 +171,7 @@ function updateList(flag = 0){
         else{
             let index = 0;
             for(let timestamp of beatTimestamps){
-                let instructionSelector = '<label for="instruction">Instruction:</label>\n<select name="instruction" id="instruction' + index.toString() + '"' + '><option value="ROTATE_FORWARD_TO">ROTATE_FORWARD_TO</option>\n<option value="ROTATE_FORWARD_BY">ROTATE_FORWARD_BY</option>\n<option value="ROTATE_UP_TO">ROTATE_UP_TO</option>\n<option value="ROTATE_UP_BY">ROTATE_UP_BY</option>\n';
-                                
-                instructionSelector += '<option value="ORBITNOTE_FIXED_RED">ORBITNOTE_FIXED_RED</option>\n<option value="ORBITNOTE_FIXED">ORBITNOTE_FIXED</option>\n';
-                instructionSelector += '<option value="ORBITNOTE_MOVING_RED">ORBITNOTE_MOVING_RED</option>\n<option value="ORBITNOTE_MOVING">ORBITNOTE_MOVING</option>\n';
-                instructionSelector += '<option value="TAPNOTE">TAPNOTE</option>\n';
-
-                instructionSelector += '</select>';
-                
+                let instructionSelector = '<label for="instruction">Instruction:</label>\n<select name="instruction" id="instruction' + index.toString() + '"' + '><option value="AIRNOTE">AIRNOTE</option>\n<option value="BALLNOTE">BALLNOTE</option>\n</select>';
                 let parameter = '<label for="parameter"style="margin-left:3px;margin-right:3px;">Parameters:</label><input type="text" id="parameter' + index.toString() + '" name="parameter"  cols="3" style="resize:none;overflow-y:hidden;">';
                 
                 listdata += `<li id=${timestamp} onclick="removeTimestamp(${timestamp});">${timestamp}</li>`;
@@ -275,13 +261,7 @@ function importList(instructionL,parameterL){
             let index = 0;
             for(let timestamp of beatTimestamps){
 
-                let instructionSelector = '<label for="instruction">Instruction:</label>\n<select name="instruction" id="instruction' + index.toString() + '"' + '><option value="ROTATE_FORWARD_TO">ROTATE_FORWARD_TO</option>\n<option value="ROTATE_FORWARD_BY">ROTATE_FORWARD_BY</option>\n<option value="ROTATE_UP_TO">ROTATE_UP_TO</option>\n<option value="ROTATE_UP_BY">ROTATE_UP_BY</option>\n';
-                                
-                instructionSelector += '<option value="ORBITNOTE_FIXED_RED">ORBITNOTE_FIXED_RED</option>\n<option value="ORBITNOTE_FIXED">ORBITNOTE_FIXED</option>\n';
-                instructionSelector += '<option value="ORBITNOTE_MOVING_RED">ORBITNOTE_MOVING_RED</option>\n<option value="ORBITNOTE_MOVING">ORBITNOTE_MOVING</option>\n';
-                instructionSelector += '<option value="TAPNOTE">TAPNOTE</option>\n';
-
-                instructionSelector += '</select>';
+                let instructionSelector = '<label for="instruction">Instruction:</label>\n<select name="instruction" id="instruction' + index.toString() + '"' + '><option value="AIRNOTE">AIRNOTE</option>\n<option value="BALLNOTE">BALLNOTE</option>\n</select>';
                 let parameter = '<label for="parameter"style="margin-left:3px;margin-right:3px;">Parameters:</label><input type="text" id="parameter' + index.toString() + '" name="parameter"  cols="3" style="resize:none;overflow-y:hidden;">';
                 
                 listdata += `<li id=${timestamp} onclick="removeTimestamp(${timestamp});">${(Math.floor(timestamp / secPerBeat*4)/4).toFixed(2)}</li>`;
@@ -294,13 +274,7 @@ function importList(instructionL,parameterL){
         else{
             let index = 0;
             for(let timestamp of beatTimestamps){
-                let instructionSelector = '<label for="instruction">Instruction:</label>\n<select name="instruction" id="instruction' + index.toString() + '"' + '><option value="ROTATE_FORWARD_TO">ROTATE_FORWARD_TO</option>\n<option value="ROTATE_FORWARD_BY">ROTATE_FORWARD_BY</option>\n<option value="ROTATE_UP_TO">ROTATE_UP_TO</option>\n<option value="ROTATE_UP_BY">ROTATE_UP_BY</option>\n';
-                                
-                instructionSelector += '<option value="ORBITNOTE_FIXED_RED">ORBITNOTE_FIXED_RED</option>\n<option value="ORBITNOTE_FIXED">ORBITNOTE_FIXED</option>\n';
-                instructionSelector += '<option value="ORBITNOTE_MOVING_RED">ORBITNOTE_MOVING_RED</option>\n<option value="ORBITNOTE_MOVING">ORBITNOTE_MOVING</option>\n';
-                instructionSelector += '<option value="TAPNOTE">TAPNOTE</option>\n';
-
-                instructionSelector += '</select>';
+                let instructionSelector = '<label for="instruction">Instruction:</label>\n<select name="instruction" id="instruction' + index.toString() + '"' + '><option value="AIRNOTE">AIRNOTE</option>\n<option value="BALLNOTE">BALLNOTE</option>\n</select>';
                 let parameter = '<label for="parameter"style="margin-left:3px;margin-right:3px;">Parameters:</label><input type="text" id="parameter' + index.toString() + '" name="parameter"  cols="3" style="resize:none;overflow-y:hidden;">';
                 
                 listdata += `<li id=${timestamp} onclick="removeTimestamp(${timestamp});">${timestamp}</li>`;
