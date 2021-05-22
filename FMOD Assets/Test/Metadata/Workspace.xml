@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="Workspace" id="{34eda7b1-57cc-4298-9391-b9c3b2cac280}">
+		<property name="builtBanksOutputDirectory">
+			<value>D:/Projects/VR Rhythm Game Project/FMOD Assets</value>
+		</property>
+		<relationship name="masterEventFolder">
+			<destination>{a7497487-f72e-4e0b-95a4-e59908387eab}</destination>
+		</relationship>
+		<relationship name="masterTagFolder">
+			<destination>{7437fa80-6bc1-416b-878a-4a039108f0d3}</destination>
+		</relationship>
+		<relationship name="masterEffectPresetFolder">
+			<destination>{0cd56076-4044-44c1-92fc-1723490ed1b9}</destination>
+		</relationship>
+		<relationship name="masterParameterPresetFolder">
+			<destination>{bd57d61f-c297-45e6-b424-47e358479610}</destination>
+		</relationship>
+		<relationship name="masterBankFolder">
+			<destination>{acc7318c-26f5-44d9-bc92-85e3196ff071}</destination>
+		</relationship>
+		<relationship name="masterSandboxFolder">
+			<destination>{4ed21f33-c130-484b-9056-f7d26fb630e1}</destination>
+		</relationship>
+		<relationship name="masterAssetFolder">
+			<destination>{83bdf241-7ee0-432b-a908-23bd19b379b3}</destination>
+		</relationship>
+		<relationship name="mixer">
+			<destination>{99eaf956-8b26-46c7-9adf-700d6bbd0b99}</destination>
+		</relationship>
+		<relationship name="profilerSessionFolder">
+			<destination>{295edb27-643d-4ea0-875d-beec83e7a599}</destination>
+		</relationship>
+		<relationship name="platforms">
+			<destination>{a006aaf9-c3d4-439a-bec3-b878910891b7}</destination>
+		</relationship>
+	</object>
+</objects>

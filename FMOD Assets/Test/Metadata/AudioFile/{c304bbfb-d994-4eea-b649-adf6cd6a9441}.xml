@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="AudioFile" id="{c304bbfb-d994-4eea-b649-adf6cd6a9441}">
+		<property name="assetPath">
+			<value>東方MVチルノのパーフェクトさんすう教室IOSYS.mp3</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>127.76489795918367</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{83bdf241-7ee0-432b-a908-23bd19b379b3}</destination>
+		</relationship>
+	</object>
+</objects>

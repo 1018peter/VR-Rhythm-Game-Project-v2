@@ -1,0 +1,146 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Beatmap Helper</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body onload="init();">
+
+  <div style="margin-top:25px"><audio id="audio" controls>
+    <source src="" id="src" />
+  </audio></div>
+  <div id="toolbox">
+    <form>
+      <div class="form-group">
+        <button type="button" style="width:100%" class="btn btn-primary" data-toggle="modal" data-target="#instructionsModal">
+          Instructions
+        </button>
+      </div>
+      <div class="form-group">
+        
+        <label for="upload" style="margin-left:2%;display:inline">Upload Music:</label>
+        <input type="file" id="upload" />
+        </div>
+      <div class="form-check">
+        <label class="form-check-label" for="beatDisplayToggle">Enable Beat Progress Highlight:</label>
+        <input type="checkbox" id="beatDisplayToggle" data-toggle="toggle">
+      </div>
+
+      <div class="form-group">
+        
+        <label for="bpm" style="margin-left:2%">Set BPM:</label>
+        <input type="number" id="bpm" placeholder="120" onchange="if(this.value <= 0) this.value = 1;" />
+      </div>
+      
+      <div class="form-group">
+        
+        <label for="playbackRate" style="margin-left:2%">Playback Rate:</label>
+        <input type="number" id="playbackRate" placeholder="1" onchange="if(this.value === '' || this.value <= 0) this.value = 1; document.getElementById('audio').playbackRate = this.value;" />
+      </div>
+
+      <div class="form-check">
+        <label class="form-check-label" for="BPMdisplayToggle">Display in Beats:</label>
+        <input type="checkbox" id="BPMdisplayToggle" onchange="updateList();" data-toggle="toggle">
+      </div>
+      <div class="form-check">
+        <label class="form-check-label" for="enableTimestampToggle">Enable Timestamp Display:</label>
+        <input type="checkbox" id="enableTimestampToggle" onchange="updateList(1);" data-toggle="toggle">
+      </div>
+
+      <div class="form-group">
+        
+        <label for="bpm" style="margin-left:2%">Timestamp Buffer Size:</label>
+        <input type="number" id="timestampBufferSize" placeholder="1" />
+      </div>
+      <div class="form-group">
+        
+        <label for="import" style="margin-left:2%;display:inline">Import Timestamps from File:</label>
+        <input type="file" id="import" onchange="importTimestamps();" />
+        </div>
+      <div class="form-group">
+        <div><button type="button" style="margin-left:2%" class="btn btn-danger" onclick="if(confirm('Are you sure you want to clear all timestamps?'))clearAllTimestamps();">Clear All Timestamps</button></div>
+      <div><button type="button" style="margin-left:2%" class="btn btn-primary" id="export">Export Timestamps</button></div>
+    </div>
+    </form>
+
+  </div>
+  
+  <!-- Modal -->
+<div class="modal fade" id="instructionsModal" tabindex="-1" role="dialog" aria-labelledby="instructionsModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="instructionsModalLabel">Instructions</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ol>
+          <li>Before you start, you should look up the BPM of the song of your choice. And fill the 'Set BPM' field.</li>
+          <li>Then, you should upload the audio file (.mp3, .wav, or others) you want to time.</li>
+          <li>To get familiar with how the Beat Helper works, you should set 'Enable Timestamp Display' to 'On' by clicking on it. (Note that this will cause lag once the number of timestamps gets large)</li>
+          <li>You can now hit Play on the audio player at the top of the page. Tap Space or the Z key on your keyboard to set timestamps.</li>
+          <li>Timestamps are shown below the page. You can click on them to delete them.</li>
+          <li>The 'Display in Beats' option can be toggled to display timestamps in units of beats, which is what our rhythm game's system will use. (As opposed to seconds)</li>
+          <li>The 'Enable Beat Progress Highlight' option can be toggled if you want to see where the beat that matches the song's progress is. Note that this is not very accurate and may skip beats often for fast songs.</li>
+          <li>The 'Playback Rate' option can be changed to speed up or slow down the playback speed of the song. (Audio glitches happen if you slow down too much. I recommend that you don't go below 0.8)</li>
+          <li>The 'Timestamp Buffer Size' field can be adjusted to show up to a set number of latest timestamps you've keyed in. This can be helpful if you're trying to tune a specific section of the song.</li>
+          <li>You can import a timestamp file (which should've been generated from the Beat Helper as well) to edit it here.</li>
+          <li>You can also export the sequence of timestamps you've inserted into a text file, which will be in a format (recorded in units of beats) that the beatmap system can process.</li>
+        </ol>
+        <div></div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="position:fixed;right:10px;top:30%;">
+  <input type="checkbox" id="showtable">
+  <label for="showtable" id="checkshow" style="color:white;">Hide the Instruction Guide</label>
+  <div id="instructionguide" style="background-color: aliceblue;border:solid black 1px;border-radius:5px ;">
+    <br>
+    <table>
+      <tr>
+        <th>Instruction</th>
+        <th># of Parameters</th>
+        <th>Parameters descriptions</th>
+      </tr>
+      <tr>
+        <th>AIRNOTE</th>
+        <th>3</th>
+        <th>(x,y,z)</th>
+      </tr>
+      <tr>
+        <th>BALLNOTE</th>
+        <th>3</th>
+        <th>(x,y,distance(far:0/near:1))</th>
+      </tr>
+    </table>
+    <div>Seperate each parameter with a comma</div>
+    <div>ex : x=12.5, y=25, distance=0</div>
+    <div>Parameters = 12.5,25,0</div>
+  </div>
+</div>
+  <div style="color:whitesmoke"><ul id="timestampBufferList">Timestamp Buffer:</ul></div>
+  
+  <div style="color:whitesmoke"><ul id="timestampList">Timestamps:</ul></div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+  <script src="scripts.js"></script>
+</body>
+</html>
