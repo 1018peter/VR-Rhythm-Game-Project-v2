@@ -135,48 +135,17 @@ namespace Assets.Scripts
             // Internal: Rotates around the forward axis.
             float duration = beats / bpm * 60;
             float t = 0;
-            float startAngle = orbit.rotation.eulerAngles.z;
+            float startAngle = orbitManager.orbitTransformR.rotation.eulerAngles.z;
             float endAngle = startAngle + offsetAngle;
             while(t / duration < 1){
-                orbit.rotation = Quaternion.Euler(
-                    orbit.rotation.eulerAngles.x,
-                    orbit.rotation.eulerAngles.y,
+                orbitManager.orbitTransformR.rotation = Quaternion.Euler(
+                    orbitManager.orbitTransformR.rotation.eulerAngles.x,
+                    orbitManager.orbitTransformR.rotation.eulerAngles.y,
                     Mathf.LerpAngle(startAngle, endAngle, t / duration));
                 yield return new WaitForEndOfFrame();
                 t += Time.deltaTime;
             }
         }
-
-        public IEnumerator RotateOrbitUp(Transform orbit, int beats, float endAngle){
-            // Internal: Rotates around the up axis. (The axis that goes through the flat side.)
-            float duration = beats / bpm * 60;
-            float t = 0;
-            float startAngle = orbit.rotation.eulerAngles.y;
-            while(t / duration < 1){
-                orbit.rotation = Quaternion.Euler(
-                    orbit.rotation.eulerAngles.x,
-                    Mathf.LerpAngle(startAngle, endAngle, t / duration),
-                    orbit.rotation.eulerAngles.z);
-                yield return new WaitForEndOfFrame();
-                t += Time.deltaTime;
-            }
-        }
-        public IEnumerator RotateOrbitUpOffset(Transform orbit, int beats, float offsetAngle){
-            // Internal: Rotates around the up axis. (The axis that goes through the flat side.)
-            float duration = beats / bpm * 60;
-            float t = 0;
-            float startAngle = orbit.rotation.eulerAngles.y;
-            float endAngle = startAngle + offsetAngle;
-            while(t / duration < 1){
-                orbit.rotation = Quaternion.Euler(
-                    orbit.rotation.eulerAngles.x,
-                    Mathf.LerpAngle(startAngle, endAngle, t / duration),
-                    orbit.rotation.eulerAngles.z);
-                yield return new WaitForEndOfFrame();
-                t += Time.deltaTime;
-            }
-        }
-
         public IEnumerator RotateRedOrbitForward(int beats, float endAngle){
             // Internal: Rotates around the forward axis.
             float duration = beats / bpm * 60;
@@ -425,19 +394,11 @@ namespace Assets.Scripts
                 StopCoroutine(oscillator);
             }
         }
+
+
         
 
         #endregion
-
-        Transform decodeOrbitColor(string encode){
-            switch(encode){
-                case "R": return orbitManager.orbitTransformR;
-                case "G": return orbitManager.orbitTransformG;
-                case "B": return orbitManager.orbitTransformB;
-            }
-
-            return null;
-        }
 
         /// <summary>
         /// Load the beatmap specified by name.
@@ -463,7 +424,6 @@ namespace Assets.Scripts
                 string funcCode = tokens[0];
                 if (funcCode.StartsWith("#") || funcCode.StartsWith("//")) continue; // Skip comments.
                 int parameterCount = tokens.Length - 1;
-                Transform targetOrbit = null;
                 switch (funcCode)
                 {
                     case "BPM":
@@ -472,46 +432,114 @@ namespace Assets.Scripts
                         bpm = Convert.ToInt32(tokens[1]);
                         BPMdefined = true;
                         break;
-                    case "ROTATE_FORWARD_TO":
-                        Assert.IsTrue(parameterCount == 4, $"Line {lineCount}: ROTATE_FORWARD_TO expects exactly 4 parameters (timestamp, orbit color(R/G/B), rotation duration in beats, resulting rotation in degrees). {parameterCount} was found.");
-                        targetOrbit = decodeOrbitColor(tokens[2]);
-                        Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
-                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateOrbitForward(targetOrbit, Convert.ToInt32(tokens[3]), Convert.ToSingle(tokens[4]))); }));
+                    case "RED_ROTATE_FORWARD_TO":
+                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: RED_ROTATE_FORWARD_TO expects exactly 3 parameters (timestamp, rotation duration in beats, resulting rotation in degrees). {parameterCount} was found.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateRedOrbitForward(Convert.ToInt32(tokens[2]), Convert.ToSingle(tokens[3]))); }));
                         
                         break;
-                    case "ROTATE_FORWARD_BY":
-                        Assert.IsTrue(parameterCount == 4, $"Line {lineCount}: ROTATE_FORWARD_BY expects exactly 4 parameters (timestamp, orbit color(R/G/B), rotation duration in beats, offset rotation in degrees). {parameterCount} was found.");
-                        targetOrbit = decodeOrbitColor(tokens[2]);
-                        Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
-                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateOrbitForwardOffset(targetOrbit, Convert.ToInt32(tokens[3]), Convert.ToSingle(tokens[4]))); }));
+                    case "RED_ROTATE_FORWARD_BY":
+                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: RED_ROTATE_FORWARD_BY expects exactly 3 parameters (timestamp, rotation duration in beats, offset rotation in degrees). {parameterCount} was found.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateRedOrbitForwardOffset(Convert.ToInt32(tokens[2]), Convert.ToSingle(tokens[3]))); }));
                         
                         break;
-                    case "ROTATE_UP_TO":
-                        Assert.IsTrue(parameterCount == 4, $"Line {lineCount}: ROTATE_UP_TO expects exactly 4 parameters (timestamp, orbit color(R/G/B), rotation duration in beats, resulting rotation in degrees). {parameterCount} was found.");
-                        targetOrbit = decodeOrbitColor(tokens[2]);
-                        Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
-                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateOrbitUp(targetOrbit, Convert.ToInt32(tokens[3]), Convert.ToSingle(tokens[4]))); }));
+                    case "RED_ROTATE_UP_TO":
+                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: RED_ROTATE_UP_TO expects exactly 3 parameters (timestamp, rotation duration in beats, resulting rotation in degrees). {parameterCount} was found.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateRedOrbitUp(Convert.ToInt32(tokens[2]), Convert.ToSingle(tokens[3]))); }));
                         
                         break;
-                    case "ROTATE_UP_BY":
-                        Assert.IsTrue(parameterCount == 4, $"Line {lineCount}: ROTATE_UP_BY expects exactly 4 parameters (timestamp, orbit color(R/G/B), rotation duration in beats, offset rotation in degrees). {parameterCount} was found.");
-                        targetOrbit = decodeOrbitColor(tokens[2]);
-                        Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
-                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateOrbitUpOffset(targetOrbit, Convert.ToInt32(tokens[3]), Convert.ToSingle(tokens[4]))); }));
+                    case "RED_ROTATE_UP_BY":
+                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: RED_ROTATE_UP_BY expects exactly 3 parameters (timestamp, rotation duration in beats, offset rotation in degrees). {parameterCount} was found.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateRedOrbitUpOffset(Convert.ToInt32(tokens[2]), Convert.ToSingle(tokens[3]))); }));
                         
                         break;
-                    case "ORBITNOTE_FIXED":
-                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: ORBITNOTE_FIXED expects exactly 3 parameters (timestamp, orbit color(R/G/B), position on orbit in degrees). {parameterCount} was found.");
-                        targetOrbit = decodeOrbitColor(tokens[2]);
-                        Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
-                        notes.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { SpawnOrbitNodeInPlace(targetOrbit, Convert.ToSingle(tokens[3])); }));
+                    case "BLUE_ROTATE_FORWARD_TO":
+                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: BLUE_ROTATE_FORWARD_TO expects exactly 3 parameters (timestamp, rotation duration in beats, resulting rotation in degrees). {parameterCount} was found.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateBlueOrbitForward(Convert.ToInt32(tokens[2]), Convert.ToSingle(tokens[3]))); }));
+                        
+                        break;
+                    case "BLUE_ROTATE_FORWARD_BY":
+                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: BLUE_ROTATE_FORWARD_BY expects exactly 3 parameters (timestamp, rotation duration in beats, offset rotation in degrees). {parameterCount} was found.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateBlueOrbitForwardOffset(Convert.ToInt32(tokens[2]), Convert.ToSingle(tokens[3]))); }));
+                        
+                        break;
+                    case "BLUE_ROTATE_UP_TO":
+                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: BLUE_ROTATE_UP_TO expects exactly 3 parameters (timestamp, rotation duration in beats, resulting rotation in degrees). {parameterCount} was found.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateBlueOrbitUp(Convert.ToInt32(tokens[2]), Convert.ToSingle(tokens[3]))); }));
+                        
+                        break;
+                    case "BLUE_ROTATE_UP_BY":
+                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: BLUE_ROTATE_UP_BY expects exactly 3 parameters (timestamp, rotation duration in beats, offset rotation in degrees). {parameterCount} was found.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateBlueOrbitUpOffset(Convert.ToInt32(tokens[2]), Convert.ToSingle(tokens[3]))); }));
+                        
+                        break;
+                    case "GREEN_ROTATE_FORWARD_TO":
+                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: GREEN_ROTATE_FORWARD_TO expects exactly 3 parameters (timestamp, rotation duration in beats, resulting rotation in degrees). {parameterCount} was found.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateGreenOrbitForward(Convert.ToInt32(tokens[2]), Convert.ToSingle(tokens[3]))); }));
+                        
+                        break;
+                    case "GREEN_ROTATE_FORWARD_BY":
+                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: GREEN_ROTATE_FORWARD_BY expects exactly 3 parameters (timestamp, rotation duration in beats, offset rotation in degrees). {parameterCount} was found.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateGreenOrbitForwardOffset(Convert.ToInt32(tokens[2]), Convert.ToSingle(tokens[3]))); }));
+                        
+                        break;
+                    case "GREEN_ROTATE_UP_TO":
+                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: GREEN_ROTATE_UP_TO expects exactly 3 parameters (timestamp, rotation duration in beats, resulting rotation in degrees). {parameterCount} was found.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateGreenOrbitUp(Convert.ToInt32(tokens[2]), Convert.ToSingle(tokens[3]))); }));
+                        
+                        break;
+                    case "GREEN_ROTATE_UP_BY":
+                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: GREEN_ROTATE_UP_BY expects exactly 3 parameters (timestamp, rotation duration in beats, offset rotation in degrees). {parameterCount} was found.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateGreenOrbitUpOffset(Convert.ToInt32(tokens[2]), Convert.ToSingle(tokens[3]))); }));
+                        
+                        break;
+                    case "OSCILLATE_RED_BLUE":
+                        Assert.IsTrue(parameterCount == 2, $"Line {lineCount}: OSCILLATE_RED_BLUE expects exactly 2 parameters (timestamp, amplitude in angles). {parameterCount} was found.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartOscillator(orbitManager.orbitTransformR, orbitManager.orbitTransformB, Convert.ToSingle(tokens[2])); }));
+                        
+                        break;
+                    case "OSCILLATE_RED_GREEN":
+                        Assert.IsTrue(parameterCount == 2, $"Line {lineCount}: OSCILLATE_RED_GREEN expects exactly 2 parameters (timestamp, amplitude in angles). {parameterCount} was found.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartOscillator(orbitManager.orbitTransformR, orbitManager.orbitTransformG, Convert.ToSingle(tokens[2])); }));
+                        
+                        break;
+                    case "STOP_OSCILLATE":
+                        Assert.IsTrue(parameterCount == 1, $"Line {lineCount}: STOP_OSCILLATE expects exactly one parameter (timestamp). {parameterCount} was found.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StopOscillator(); }));
+                        
+                        break;
+                    case "OSCILLATE_GREEN_BLUE":
+                        Assert.IsTrue(parameterCount == 2, $"Line {lineCount}: OSCILLATE_GREEN_BLUE expects exactly 2 parameters (timestamp, amplitude in angles). {parameterCount} was found.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartOscillator(orbitManager.orbitTransformG, orbitManager.orbitTransformB, Convert.ToSingle(tokens[2])); }));
+                        
+                        break;
+                    case "ORBITNOTE_FIXED_RED":
+                        Assert.IsTrue(parameterCount == 2, $"Line {lineCount}: ORBITNOTE_FIXED_RED expects exactly 2 parameters (timestamp, position on orbit in degrees). {parameterCount} was found.");
+                        notes.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { SpawnOrbitNodeInPlace(orbitManager.orbitTransformR, Convert.ToSingle(tokens[2])); }));
 
                         break;
-                    case "ORBITNOTE_MOVING":
-                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: ORBITNOTE_MOVING expects exactly 4 parameters (timestamp, orbit color(R/G/B), start position on orbit in degrees, end position on orbit in degrees). {parameterCount} was found.");
-                        targetOrbit = decodeOrbitColor(tokens[2]);
-                        Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
-                        notes.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { SpawnOrbitNodeMoving(targetOrbit, Convert.ToSingle(tokens[3]), Convert.ToSingle(tokens[4])); }));
+                    case "ORBITNOTE_FIXED_BLUE":
+                        Assert.IsTrue(parameterCount == 2, $"Line {lineCount}: ORBITNOTE_FIXED_BLUE expects exactly 2 parameters (timestamp, position on orbit in degrees). {parameterCount} was found.");
+                        notes.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { SpawnOrbitNodeInPlace(orbitManager.orbitTransformB, Convert.ToSingle(tokens[2])); }));
+
+                        break;
+                    case "ORBITNOTE_FIXED_GREEN":
+                        Assert.IsTrue(parameterCount == 2, $"Line {lineCount}: ORBITNOTE_FIXED_GREEN expects exactly 2 parameters (timestamp, position on orbit in degrees). {parameterCount} was found.");
+                        notes.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { SpawnOrbitNodeInPlace(orbitManager.orbitTransformG, Convert.ToSingle(tokens[2])); }));
+
+                        break;
+                    case "ORBITNOTE_MOVING_RED":
+                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: ORBITNOTE_MOVING_RED expects exactly 3 parameters (timestamp, start position on orbit in degrees, end position on orbit in degrees). {parameterCount} was found.");
+                        notes.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { SpawnOrbitNodeMoving(orbitManager.orbitTransformR, Convert.ToSingle(tokens[2]), Convert.ToSingle(tokens[3])); }));
+
+                        break;
+                    case "ORBITNOTE_MOVING_BLUE":
+                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: ORBITNOTE_MOVING_BLUE expects exactly 3 parameters (timestamp, start position on orbit in degrees, end position on orbit in degrees). {parameterCount} was found.");
+                        notes.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { SpawnOrbitNodeMoving(orbitManager.orbitTransformB, Convert.ToSingle(tokens[2]), Convert.ToSingle(tokens[3])); }));
+
+                        break;
+                    case "ORBITNOTE_MOVING_GREEN":
+                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: ORBITNOTE_MOVING_GREEN expects exactly 3 parameters (timestamp, start position on orbit in degrees, end position on orbit in degrees). {parameterCount} was found.");
+                        notes.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { SpawnOrbitNodeMoving(orbitManager.orbitTransformG, Convert.ToSingle(tokens[2]), Convert.ToSingle(tokens[3])); }));
 
                         break;
                     case "TAPNOTE":
