@@ -319,8 +319,15 @@ function importList(instructionL,parameterL){
     let index = 0;
     for(let timestamp of beatTimestamps){
         
-        document.getElementById('instruction' + index.toString()).value =  instructionL[index];
-        document.getElementById('parameter' + index.toString()).value = parameterL[index++];       
+        try{
+            console.log("instruction");
+            document.getElementById("instruction" + index.toString()).value =  instructionL[index];
+            console.log("parameter");
+            document.getElementById("parameter" + index.toString()).value = parameterL[index++]; 
+        }catch(e){
+            console.log(index);
+            console.log(e);
+        }      
 
     }
 
@@ -445,21 +452,33 @@ function importTimestamps(){
         
 
         for(let line of tokens){
-
-            line = line.split(' ');
-            let instr = line[0];
-            line.shift();
-            let time = line[0];
-            line.shift();
-            let param = line.join(',');
-            
-            if(!isNaN(parseFloat(time))){
+            if(line == ""){
+                console.log('empty line');
+            }else if(line[0]=='/' && line[1]=='/'){
+                console.log(line);
+            }else if(line[0]=='#'){
+                console.log(line);
+            }else{
+                console.log(line);
+                line = line.split(' ');
+                let instr = line[0];
+                line.shift();
+                let time = line[0];
+                line.shift();
+                let param = line.join(',');
                 
-                beatTimestamps.add(parseFloat(time) * secPerBeat);
-                instructionList.push(instr);
-                parameterList.push(param);
-            } 
+                if(!isNaN(parseFloat(time))){
+                    
+                    beatTimestamps.add(parseFloat(time) * secPerBeat);
+                    instructionList.push(instr);
+                    parameterList.push(param);
+                } 
+            }
+            
         }
+        console.log(beatTimestamps);
+        console.log(instructionList);
+        console.log(parameterList);
         importList(instructionList,parameterList);
     };
     handle.readAsText(document.getElementById("import").files[0]);
