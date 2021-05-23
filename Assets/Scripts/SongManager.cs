@@ -445,8 +445,12 @@ namespace Assets.Scripts
         // OnGUI is used for debug displays.
         private void OnGUI()
         {
-            GUI.Box(new Rect(0, Screen.height - 100, 200, 100), "");
-            GUI.Label(new Rect(0, Screen.height - 100, 200, 100), $"Song Position: {songPosition.ToString("0.00")} seconds ({songPosInBeats.ToString("0.00")} beats)\nNote Index: {nextNoteIndex}\nScore: {score}");
+            GUI.Box(new Rect(0, Screen.height - 200, 200, 200), "");
+            GUI.Label(new Rect(0, Screen.height - 200, 200, 200), 
+            $"Song Position: {songPosition.ToString("0.00")} seconds ({songPosInBeats.ToString("0.00")} beats)\nNote Index: {nextNoteIndex}\nScore: {score}\n"
+            + $"Red Orbit Rotation: {orbitManager.orbitTransformR.rotation.eulerAngles}"
+            + $"Green Orbit Rotation: {orbitManager.orbitTransformG.rotation.eulerAngles}"
+            + $"Blue Orbit Rotation: {orbitManager.orbitTransformR.rotation.eulerAngles}");
         
         }
 
