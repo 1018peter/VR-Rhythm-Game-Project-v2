@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &15439219
 Transform:
   m_ObjectHideFlags: 0
@@ -512,6 +512,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08f8d0767cc9e3d4299db6a103d46938, type: 3}
 --- !u!1001 &335221406
@@ -628,7 +632,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &380119272
 Transform:
   m_ObjectHideFlags: 0
@@ -1272,6 +1276,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08f8d0767cc9e3d4299db6a103d46938, type: 3}
 --- !u!1 &866220522
@@ -1500,7 +1508,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1252715638
 Transform:
   m_ObjectHideFlags: 0
@@ -2480,6 +2488,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 6f7cf253-7062-443b-b10f-2be48a33f027
     m_ActionName: XRI RightHand/Translate Anchor
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: dadf705b-8e83-4059-ae0b-3b727a452fac
+    m_ActionName: XRI LeftHand/Grip
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 275a39e3-f8a5-4961-b571-96d21558be7e
+    m_ActionName: XRI LeftHand/Pinch
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: aa74b8e5-d981-41f0-9be5-cfcfd99fe085
+    m_ActionName: XRI RightHand/Grip
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 107bfb78-970d-446c-b7c0-3f0747a492fe
+    m_ActionName: XRI RightHand/Pinch
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Generic XR Controller
   m_DefaultActionMap: XRI HMD
@@ -2899,6 +2923,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08f8d0767cc9e3d4299db6a103d46938, type: 3}
 --- !u!1 &1944969090
@@ -2947,9 +2975,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4800e86d2940e274bbf2f8e0c1b74c98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  orbitTransformR: {fileID: 0}
-  orbitTransformG: {fileID: 0}
-  orbitTransformB: {fileID: 0}
+  orbitTransformR: {fileID: 1351582271}
+  orbitTransformG: {fileID: 1381358039}
+  orbitTransformB: {fileID: 1586792832}
 --- !u!1001 &1949593302
 PrefabInstance:
   m_ObjectHideFlags: 0
