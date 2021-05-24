@@ -182,35 +182,6 @@ namespace Assets.Scripts
             }
         }
 
-        public IEnumerator RotateRedOrbitForward(int beats, float endAngle){
-            // Internal: Rotates around the forward axis.
-            float duration = beats / bpm * 60;
-            float t = 0;
-            float startAngle = orbitManager.orbitTransformR.rotation.eulerAngles.z;
-            while(t / duration < 1){
-                orbitManager.orbitTransformR.rotation = Quaternion.Euler(
-                    orbitManager.orbitTransformR.rotation.eulerAngles.x,
-                    orbitManager.orbitTransformR.rotation.eulerAngles.y,
-                    Mathf.LerpAngle(startAngle, endAngle, t / duration));
-                yield return new WaitForEndOfFrame();
-                t += Time.deltaTime;
-            }
-        }
-        public IEnumerator RotateRedOrbitForwardOffset(int beats, float offsetAngle){
-            // Internal: Rotates around the forward axis.
-            float duration = beats / bpm * 60;
-            float t = 0;
-            float startAngle = orbitManager.orbitTransformR.rotation.eulerAngles.z;
-            float endAngle = startAngle + offsetAngle;
-            while(t / duration < 1){
-                orbitManager.orbitTransformR.rotation = Quaternion.Euler(
-                    orbitManager.orbitTransformR.rotation.eulerAngles.x,
-                    orbitManager.orbitTransformR.rotation.eulerAngles.y,
-                    Mathf.LerpAngle(startAngle, endAngle, t / duration));
-                yield return new WaitForEndOfFrame();
-                t += Time.deltaTime;
-            }
-        }
         public void SpawnOrbitNodeInPlace(Transform anchor, float orbitAngle){
             //  The note is first rotated to the same rotation as the anchor orbit.
             // Then, the note is assigned to be parent to the anchor orbit.
