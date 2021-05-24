@@ -352,7 +352,7 @@
                 {
                     "name": "",
                     "id": "b9ba9769-cef4-4afd-a33a-f6afc37e3000",
-                    "path": "<XRController>{RightHand}/trigger",
+                    "path": "<XRSimulatedController>{LeftHand}/grip",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
@@ -363,7 +363,7 @@
                 {
                     "name": "",
                     "id": "b9fa28ef-f79d-4321-81ef-94a23155862a",
-                    "path": "<XRController>{RightHand}/grip",
+                    "path": "<XRSimulatedController>{LeftHand}/grip",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
