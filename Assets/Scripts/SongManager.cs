@@ -35,6 +35,11 @@ namespace Assets.Scripts
         public GameObject tapNote;
 
         #region Readonly Variables
+        
+        //the offset time until the first beat of the song (in seconds)
+        public float offsetFromFirstBeat { get; private set; } = 0;
+
+
         //the current position of the song (in seconds)
         public float songPosition { get; private set; }
 
@@ -287,6 +292,10 @@ namespace Assets.Scripts
                         bpm = Convert.ToInt32(tokens[1]);
                         BPMdefined = true;
                         break;
+                    case "FIRST_BEAT_OFFSET":
+                        Assert.IsTrue(parameterCount == 1, $"Line {lineCount}: FIRST_BEAT_OFFSET expects exactly one parameter (seconds until the first beat of the song). {parameterCount} was found.");
+                        offsetFromFirstBeat = Convert.ToSingle(tokens[1]);
+                        break;
                     case "ROTATE_FORWARD_TO":
                         Assert.IsTrue(parameterCount == 4, $"Line {lineCount}: ROTATE_FORWARD_TO expects exactly 4 parameters (timestamp, orbit color(R/G/B), rotation duration in beats, resulting rotation in degrees). {parameterCount} was found.");
                         targetOrbit = decodeOrbitColor(tokens[2]);
@@ -473,7 +482,7 @@ namespace Assets.Scripts
         {
 
             //calculate the position in seconds
-            songPosition = (float)(AudioSettings.dspTime - dsptimesong);
+            songPosition = (float)(AudioSettings.dspTime - dsptimesong - offsetFromFirstBeat);
 
             //calculate the position in beats
             songPosInBeats = songPosition / SecPerBeat;
