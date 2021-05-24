@@ -267,17 +267,21 @@ namespace Assets.Scripts
             Beatmap beatmap = gameObject.transform.Find(beatmapName).GetComponent<Beatmap>();
             Assert.IsNotNull(beatmap, $"Beatmap of name '{beatmapName}' not found in children of {gameObject.name}.");
             string[] lines = beatmap.script.text.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            int lineCount = 0;
+            int lineCount = 1;
             foreach (var line in lines)
             {
+                if(line.StartsWith("#") || line.StartsWith("//")) {
+                    lineCount++;
+                    continue; // Skip comments.
+                }
                 string[] tokens = line.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
                 if (tokens.Length == 0) continue; // Skip empty lines.
                 string funcCode = tokens[0];
-                if (funcCode.StartsWith("#") || funcCode.StartsWith("//")) continue; // Skip comments.
                 int parameterCount = tokens.Length - 1;
                 Transform targetOrbit = null;
-                switch (funcCode)
-                {
+                try{
+                    switch (funcCode)
+                    {
                     case "BPM":
                         Assert.IsTrue(parameterCount == 1, $"Line {lineCount}: BPM expects exactly one parameter (beats-per-minute of the song). {parameterCount} was found.");
                         bpm = Convert.ToInt32(tokens[1]);
@@ -320,7 +324,7 @@ namespace Assets.Scripts
 
                         break;
                     case "ORBITNOTE_MOVING":
-                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: ORBITNOTE_MOVING expects exactly 4 parameters (timestamp, orbit color(R/G/B), start position on orbit in degrees, end position on orbit in degrees). {parameterCount} was found.");
+                        Assert.IsTrue(parameterCount == 4, $"Line {lineCount}: ORBITNOTE_MOVING expects exactly 4 parameters (timestamp, orbit color(R/G/B), start position on orbit in degrees, end position on orbit in degrees). {parameterCount} was found.");
                         targetOrbit = decodeOrbitColor(tokens[2]);
                         Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
                         notes.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { SpawnOrbitNodeMoving(targetOrbit, Convert.ToSingle(tokens[3]), Convert.ToSingle(tokens[4])); }));
@@ -333,7 +337,12 @@ namespace Assets.Scripts
                     default:
                         Debug.LogError($"Line {lineCount}: Unknown command '{tokens[0]}'.");
                         break;
+                    }
                 }
+                catch(System.Exception e){
+                    Debug.LogError($"Error occurred while parsing line {lineCount}.\nException: {e.ToString()}\nStackTrace: {e.StackTrace}");
+                }
+                
 
                 lineCount++;
             }
