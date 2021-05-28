@@ -5,12 +5,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using TMPro;
+using System.Linq;
 namespace Assets.Scripts
 {
-
-    public enum HitRank{
-        Early, OK, Nice, Great, Perfect, Late
-    }
 
     /// <summary>
     /// Singleton class that provides an interface to beatmap script execution.
@@ -19,7 +16,7 @@ namespace Assets.Scripts
     public class SongManager : MonoBehaviour
     {
         // handle to the singleton class.
-        public static SongManager handle;
+        public static SongManager Instance;
 
         // handle to the orbit system.
         public OrbitManager orbitManager;
@@ -27,6 +24,19 @@ namespace Assets.Scripts
         // handle to audio source
         [HideInInspector]
         public AudioSource globalAudio;
+
+        public AudioClip onUIActivate;
+        public AudioClip onUIDeactivate;
+
+        #region Audio Utilities
+        public void playUIactivate(){
+            globalAudio.PlayOneShot(onUIActivate);
+        }
+
+        public void playUIdeactivate(){
+            globalAudio.PlayOneShot(onUIDeactivate);
+        }
+        #endregion
 
         [Header("Note Prefabs")]
 
@@ -66,7 +76,7 @@ namespace Assets.Scripts
         public bool loadDefaultBeatmapOnLoad = true;
         
         [Tooltip("For testing: The default beatmap to execute.")]
-        public string defaultBeatmapName = "Chirupa";
+        public Beatmap defaultBeatmap;
 
 
 
@@ -120,6 +130,8 @@ namespace Assets.Scripts
         }
 
         #endregion
+
+        #region Rotation Utilities
 
         public IEnumerator RotateOrbitForward(Transform orbit, int beats, float endAngle){
             // Internal: Rotates around the forward axis.
@@ -214,12 +226,10 @@ namespace Assets.Scripts
             newNote.transform.localScale = Vector3.one;
             newNote.transform.localRotation = Quaternion.Euler(0, rotationY, rotationZ);
         }
-        #region TODO
-
-
 
         #endregion
 
+        #region Beatmap I/O
         Transform decodeOrbitColor(string encode){
             switch(encode){
                 case "R": return orbitManager.orbitTransformR;
@@ -230,18 +240,17 @@ namespace Assets.Scripts
             return null;
         }
 
+        Beatmap currentBeatmap;
+
         /// <summary>
-        /// Load the beatmap specified by name.
+        /// The object version of LoadBeatmap.
         /// The script is interpreted line by line.
         /// Basic syntax checking is performed.
         /// For more details, refer to the BeatScript Spec.md document.
         /// </summary>
-        /// <param name="beatmapName">The name of the beatmap</param>
-        public void LoadBeatmap(string beatmapName)
-        {
+        /// <param name="beatmap">A beatmap component, which should belong to a gameObject</param>
+        public void LoadBeatmap(Beatmap beatmap){
             bool BPMdefined = false;
-            Beatmap beatmap = gameObject.transform.Find(beatmapName).GetComponent<Beatmap>();
-            Assert.IsNotNull(beatmap, $"Beatmap of name '{beatmapName}' not found in children of {gameObject.name}.");
             string[] lines = beatmap.script.text.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
             int lineCount = 1;
             foreach (var line in lines)
@@ -327,10 +336,26 @@ namespace Assets.Scripts
                 lineCount++;
             }
 
-            Assert.IsTrue(BPMdefined, $"Fatal Error: The script file of beatmap '{beatmapName}' does not define BPM!");
-
+            Assert.IsTrue(BPMdefined, $"Fatal Error: The script file of beatmap '{beatmap.gameObject.name}' does not define BPM!");
+            Debug.Log($"Successfully loaded beatmap '{beatmap.gameObject.name}'");
 
             globalAudio.clip = beatmap.song;
+            currentBeatmap = beatmap;
+            ResetCounts();
+        }
+
+        /// <summary>
+        /// Load the beatmap specified by name.
+        /// The script is interpreted line by line.
+        /// Basic syntax checking is performed.
+        /// For more details, refer to the BeatScript Spec.md document.
+        /// </summary>
+        /// <param name="beatmapName">The name of the beatmap</param>
+        public void LoadBeatmap(string beatmapName)
+        {
+            Beatmap beatmap = gameObject.transform.Find(beatmapName).GetComponent<Beatmap>();
+            Assert.IsNotNull(beatmap, $"Beatmap of name '{beatmapName}' not found in children of {gameObject.name}.");
+            LoadBeatmap(beatmap);
 
         }
 
@@ -375,6 +400,19 @@ namespace Assets.Scripts
             }
 
             Debug.Log("End of beatmap!");
+            yield return new WaitUntil(() => !globalAudio.isPlaying);
+            Debug.Log("End of song");
+            results = new BeatmapRecord(
+                missCount, 
+                badCount, 
+                goodCount, 
+                perfectCount, 
+                maxCombo, 
+                ComputeScore());
+            currentBeatmap.localRecords.Add(results);
+            ResultsUIController.Instance.Write();
+            GameManager.Instance.GoToResults();
+
         }
 
         /// <summary>
@@ -388,33 +426,78 @@ namespace Assets.Scripts
             StartCoroutine(ExecuteBeatmap());
         }
 
-        public void ScoreHit(HitRank rank){
-            switch(rank){
-                case HitRank.Early:
-                    score += 500;
-                    break;
-                case HitRank.OK:
-                    score += 1000;
-                    break;
-                case HitRank.Nice:
-                    score += 1250;
-                    break;
-                case HitRank.Great:
-                    score += 1750;
-                    break;
-                case HitRank.Perfect:
-                    score += 2000;
-                    break;
-                case HitRank.Late:
-                    score += 750;
-                    break;
-            }
+        public void LoadAndExecuteBeatmap(Beatmap beatmap){
+            LoadBeatmap(beatmap);
+            StartCoroutine(ExecuteBeatmap());
         }
+
+        #endregion
+
+        #region Scoring Utilities
+        public BeatmapRecord results;
+        public int missCount = 0, badCount = 0, goodCount = 0, perfectCount = 0, comboCount = 0, maxCombo = 0;
+        private List<int> comboSegmentScores = new List<int>();
+        private void ResetCounts(){
+            missCount = badCount = goodCount = perfectCount = comboCount = maxCombo = 0;
+            comboSegmentScores.Clear();
+            IngameUIController.Instance.WriteMiss(0);
+            IngameUIController.Instance.WriteBad(0);
+            IngameUIController.Instance.WriteGood(0);
+            IngameUIController.Instance.WritePerfect(0);
+            IngameUIController.Instance.WriteCombo(0);
+        }
+        public void RegisterMiss(){
+            missCount++;
+            comboSegmentScores.Add(comboCount * (comboCount - 1) / 2);
+            maxCombo = Math.Max(maxCombo, comboCount);
+            comboCount = 0;
+            IngameUIController.Instance.WriteMiss(missCount);
+            IngameUIController.Instance.WriteCombo(0);
+        }
+
+        public void RegisterBad(){
+            badCount++;
+            comboCount++;
+            IngameUIController.Instance.WriteBad(badCount);
+            IngameUIController.Instance.WriteCombo(comboCount);
+
+        }
+
+        public void RegisterGood(){
+            goodCount++;
+            comboCount++;
+            IngameUIController.Instance.WriteGood(goodCount);
+            IngameUIController.Instance.WriteCombo(comboCount);
+
+        }
+
+        public void RegisterPerfect(){
+            perfectCount++;
+            comboCount++;
+            IngameUIController.Instance.WritePerfect(perfectCount);
+            IngameUIController.Instance.WriteCombo(comboCount);
+        }
+
+        /// <summary>
+        /// Compute total score. The implementation follows the specifications. Note that Linq is used for easy summation.
+        /// </summary>
+        public int ComputeScore(){
+            comboSegmentScores.Add(comboCount * (comboCount - 1) / 2); // Case where the player ends the song with an active combo.
+            int totalNotes = notes.Count();
+            const int comboCoefficient = 20000;
+            const int noteCoefficient = 180000;
+            float noteScore = (1.0f * perfectCount + 0.7f * goodCount + 0.3f * badCount) / totalNotes * noteCoefficient;
+            float comboScoreSum = comboSegmentScores.Sum();
+            float comboScore = comboScoreSum / (totalNotes * (totalNotes - 1) / 2) * comboCoefficient;
+            return (int) Mathf.Floor(comboScore + noteScore);
+        }
+
+        #endregion
 
         // Start is called before the first frame update
         void Start()
         {
-            if (handle == null) handle = this;
+            if (Instance == null) Instance = this;
             else
             {
                 throw new UnityException("Singleton SongManager instantiated twice!");
@@ -425,10 +508,9 @@ namespace Assets.Scripts
             Assert.IsNotNull(globalAudio, "Audio Source of Song Manager not set!");
 
             if(loadDefaultBeatmapOnLoad)
-                LoadAndExecuteBeatmap(defaultBeatmapName);
+                LoadAndExecuteBeatmap(defaultBeatmap);
 
             score = 0;
-
         }
 
         // OnGUI is used for debug displays.
