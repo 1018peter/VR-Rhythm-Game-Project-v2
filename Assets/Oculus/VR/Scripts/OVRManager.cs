@@ -743,7 +743,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 	/// Allows overriding the internal mrc camera creation
 	/// </summary>
 	public InstantiateMrcCameraDelegate instantiateMixedRealityCameraGameObject = null;
-	
+
 	// OVRMixedRealityCaptureConfiguration Interface implementation
 	bool OVRMixedRealityCaptureConfiguration.enableMixedReality { get { return enableMixedReality; } set { enableMixedReality = value; } }
 	LayerMask OVRMixedRealityCaptureConfiguration.extraHiddenLayers { get { return extraHiddenLayers; } set { extraHiddenLayers = value; } }
@@ -1957,9 +1957,9 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 	private static Camera FindMainCamera() {
 
 		Camera lastCamera;
-		if (lastFoundMainCamera != null && 
-		    lastFoundMainCamera.TryGetTarget(out lastCamera) && 
-		    lastCamera != null && 
+		if (lastFoundMainCamera != null &&
+		    lastFoundMainCamera.TryGetTarget(out lastCamera) &&
+		    lastCamera != null &&
 		    lastCamera.CompareTag("MainCamera"))
 		{
 			return lastCamera;
