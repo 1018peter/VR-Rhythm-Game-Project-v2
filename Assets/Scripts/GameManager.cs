@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.InputSystem;
+using OVR;
 
 namespace Assets.Scripts
 {
@@ -58,8 +60,50 @@ namespace Assets.Scripts
         [Tooltip("The maximum distance the player can reach with their hands, relative to the player gameObject. (A rough estimate)")]
         public float playerMaxReach = 1.0f;
 
+        #region Menu Controls
+
+        public float gripRotateAngularSpeed = 10;
+
+        private Quaternion gripRotateStart = Quaternion.Euler(0, 0, 0);
+        private Vector3 rightGripRotateOrigin = new Vector3(0, 0, -2.15f);
+        private Vector3 leftGripRotateOrigin = new Vector3(0, 0, -2.15f);
+        private bool rightGripRotateEnabled = false;
+        private bool leftGripRotateEnabled = false;
+        public void RightGripRotate(InputAction.CallbackContext callbackContext){
+            if(currentMenu == ingame) return;
+            if(callbackContext.started && !leftGripRotateEnabled){ // Start
+                Debug.Log("RightGripRotate Start");
+                rightGripRotateEnabled = true;
+                rightGripRotateOrigin = playerRightController.position;
+                gripRotateStart = currentMenu.transform.localRotation;
+            }
+            else if(callbackContext.canceled){ // End
+                Debug.Log("RightGripRotate End");
+                rightGripRotateEnabled = false;
+            }
+        }
+        public void LeftGripRotate(InputAction.CallbackContext callbackContext){
+            if(currentMenu == ingame) return;
+            if(callbackContext.started && !rightGripRotateEnabled){ // Start
+                Debug.Log("LeftGripRotate Start");
+                leftGripRotateEnabled = true;
+                leftGripRotateOrigin = playerLeftController.position;
+                gripRotateStart = currentMenu.transform.localRotation;
+            }
+            else if(callbackContext.canceled){ // End
+                Debug.Log("LeftGripRotate End");
+                leftGripRotateEnabled = false;
+            }
+        }
+
+        #endregion
+
+        #region Menu State Transition Functions
+
         public void GoToMainMenu(){
             Debug.Log("Go to main menu");
+            leftGripRotateEnabled = false;
+            rightGripRotateEnabled = false;
             if(currentMenu == mainMenu) return;
             if(currentMenu != null) currentMenu.Close();
             currentMenu = mainMenu;
@@ -69,6 +113,8 @@ namespace Assets.Scripts
 
         public void GoToSettings(){
             Debug.Log("Go to settings");
+            leftGripRotateEnabled = false;
+            rightGripRotateEnabled = false;
             if(currentMenu == settings) return;
             if(currentMenu != null) currentMenu.Close();
             currentMenu = settings;
@@ -78,6 +124,8 @@ namespace Assets.Scripts
 
         public void GoToTrackSelect(){
             Debug.Log("Go to track select");
+            leftGripRotateEnabled = false;
+            rightGripRotateEnabled = false;
             if(currentMenu == trackSelect) return;
             if(currentMenu != null) currentMenu.Close();
             currentMenu = trackSelect;
@@ -87,6 +135,8 @@ namespace Assets.Scripts
 
         public void GoToIngame(){
             Debug.Log("Go to ingame");
+            leftGripRotateEnabled = false;
+            rightGripRotateEnabled = false;
             if(currentMenu != null) currentMenu.Close();
             if(currentMenu == ingame) return;
             state = GameState.Ingame;
@@ -100,6 +150,8 @@ namespace Assets.Scripts
 
         public void GoToResults(){
             Debug.Log("Go to results");
+            leftGripRotateEnabled = false;
+            rightGripRotateEnabled = false;
             if(currentMenu != null) currentMenu.Close();
             if(currentMenu == results) return;
             state = GameState.Results;
@@ -109,6 +161,7 @@ namespace Assets.Scripts
                 results.Open();
             }));
         }
+        #endregion
 
         void Awake(){
             Debug.Log("Awake");
@@ -123,7 +176,6 @@ namespace Assets.Scripts
         // Use this for initialization
         void Start()
         {
-
             Assert.IsNotNull(player);
             GameManager.state = GameState.Title;
             SongManager.Instance.orbitManager.orbitTransformB.rotation = 
@@ -135,6 +187,18 @@ namespace Assets.Scripts
         // Update is called once per frame
         void Update()
         {
+            if(rightGripRotateEnabled && !leftGripRotateEnabled){ // RightGripRotate
+                var theta = Vector3.SignedAngle(new Vector3(rightGripRotateOrigin.x, 0, rightGripRotateOrigin.z), new Vector3(playerRightController.position.x, 0, playerRightController.position.z), Vector3.up);
+                Debug.Log(theta);
+                currentMenu.transform.localRotation = Quaternion.Euler(0, gripRotateStart.eulerAngles.y + theta, 0);
+                
+            }
+            else if(leftGripRotateEnabled && !rightGripRotateEnabled){ // LeftGripRotate
+                var theta = Vector3.SignedAngle(new Vector3(leftGripRotateOrigin.x, 0, leftGripRotateOrigin.z), new Vector3(playerLeftController.position.x, 0, playerLeftController.position.z), Vector3.up);
+                Debug.Log(theta);
+                currentMenu.transform.localRotation = Quaternion.Euler(0, gripRotateStart.eulerAngles.y + theta, 0);
+                
+            }
 
         }
     }

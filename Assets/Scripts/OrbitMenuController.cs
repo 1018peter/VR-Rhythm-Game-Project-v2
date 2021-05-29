@@ -21,7 +21,7 @@ namespace Assets.Scripts{
                 AfterOpen();
             };
 
-            var start = new Vector3(0, -9.32f, 0);
+            var start = new Vector3(0, -11.32f, 0);
             gameObject.Tween("OpenMenu", start, Vector3.zero, 1, TweenScaleFunctions.QuadraticEaseInOut, updatePos, callback);
             isOpen = true;
 
@@ -44,7 +44,7 @@ namespace Assets.Scripts{
                 transform.localPosition = t.CurrentValue;
             };
 
-            var end = new Vector3(0, -9.32f, 0);
+            var end = new Vector3(0, -11.32f, 0);
             gameObject.Tween("CloseMenu", Vector3.zero, end, 1, TweenScaleFunctions.QuadraticEaseInOut, updatePos);
             isOpen = false;
         }
@@ -56,7 +56,7 @@ namespace Assets.Scripts{
                 transform.localPosition = Vector3.zero;
             }
             else{
-                transform.localPosition = new Vector3(0, -9.32f, 0);
+                transform.localPosition = new Vector3(0, -11.32f, 0);
             }
             UIelements = new List<OrbitUIController>(GetComponentsInChildren<OrbitUIController>());
             Debug.Log($"Found {UIelements.Count} UI elements in {gameObject.name}");
