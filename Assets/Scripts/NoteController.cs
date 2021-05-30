@@ -8,6 +8,10 @@ namespace Assets.Scripts
         Animator anim;
         float beatPos;
 
+        private bool hasBeenHit = false;
+
+        public GameObject destroyTarget;
+
         // Use this for initialization
         void Start()
         {
@@ -37,10 +41,12 @@ namespace Assets.Scripts
 
         // Use this for note hit logic. Whatever the player is using to hit the note with should be tagged with "Player" and have a collider.
         private void OnTriggerEnter(Collider other) {
-            Debug.Log("trigger");
-            if(other.CompareTag("Player")){
+            if(other.CompareTag("Player") && !hasBeenHit){
+                hasBeenHit = true;
                 HitCheck();
-                Destroy(this.gameObject);
+                if(destroyTarget == null)
+                    Destroy(this.gameObject);
+                else Destroy(destroyTarget);
             }   
         }
 
@@ -52,7 +58,10 @@ namespace Assets.Scripts
             anim.SetFloat("ExitTime", (t - 1) * 2);
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("End"))
             {
-                Destroy(this.gameObject);
+                SongManager.Instance.RegisterMiss();
+                if(destroyTarget == null)
+                    Destroy(this.gameObject);
+                else Destroy(destroyTarget);
             }
 
 

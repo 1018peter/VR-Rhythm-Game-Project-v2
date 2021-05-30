@@ -4528,7 +4528,7 @@ GameObject:
   - component: {fileID: 724736370}
   m_Layer: 8
   m_Name: LeftHand Controller
-  m_TagString: GameController
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9035,7 +9035,7 @@ GameObject:
   - component: {fileID: 1279433637}
   m_Layer: 8
   m_Name: RightHand Controller
-  m_TagString: GameController
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
