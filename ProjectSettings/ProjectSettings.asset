@@ -127,10 +127,12 @@ PlayerSettings:
   bundleVersion: 0.1
   preloadedAssets:
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 11400000, guid: 271079d035c157044a072116e03d23af, type: 2}
   - {fileID: -8196854396901781169, guid: 1a4c68ca72a83449f938d669337cb305, type: 2}
   - {fileID: 11400000, guid: bfa1182bd221b4ca89619141f66f1260, type: 2}
-  - {fileID: 0}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -711,8 +713,8 @@ PlayerSettings:
   managedStrippingLevel: {}
   incrementalIl2cppBuild: {}
   allowUnsafeCode: 0
-  additionalIl2CppArgs: --additional-cpp="D:/Projects/VR Rhythm Game Project/Assets/../Temp/fmod_register_static_plugins.cpp"
-    --additional-cpp="D:/Projects/VR Rhythm Game Project/Assets/Plugins/FMOD/src/Runtime/fmod_static_plugin_support.h"
+  additionalIl2CppArgs: --additional-cpp="C:/Users/cresc/Desktop/VR Projects/VR-Rhythm-Game-Project-v2/Assets/../Temp/fmod_register_static_plugins.cpp"
+    --additional-cpp="C:/Users/cresc/Desktop/VR Projects/VR-Rhythm-Game-Project-v2/Assets/Plugins/FMOD/src/Runtime/fmod_static_plugin_support.h"
   scriptingRuntimeVersion: 1
   gcIncremental: 0
   assemblyVersionValidation: 1
