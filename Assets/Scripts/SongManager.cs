@@ -250,6 +250,8 @@ namespace Assets.Scripts
         /// </summary>
         /// <param name="beatmap">A beatmap component, which should belong to a gameObject</param>
         public void LoadBeatmap(Beatmap beatmap){
+            immediateCommands.Clear();
+            notes.Clear();
             bool BPMdefined = false;
             string[] lines = beatmap.script.text.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
             int lineCount = 1;
@@ -269,7 +271,7 @@ namespace Assets.Scripts
                     {
                     case "BPM":
                         Assert.IsTrue(parameterCount == 1, $"Line {lineCount}: BPM expects exactly one parameter (beats-per-minute of the song). {parameterCount} was found.");
-                        bpm = Convert.ToInt32(tokens[1]);
+                        bpm = Convert.ToInt32(tokens[1]) * globalAudio.pitch;
                         BPMdefined = true;
                         break;
                     case "FIRST_BEAT_OFFSET":
