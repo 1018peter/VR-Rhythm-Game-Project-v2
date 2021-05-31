@@ -22,15 +22,19 @@ public class ResultsUIController : MonoBehaviour
         maxComboText.text = record.maxCombo.ToString("D3");
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    private void Awake() {
+        
         if(Instance == null){
             Instance = this;
         }
         else{
             throw new UnityException("Singleton ResultsUIController instantiated more than once.");
         }
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
     }
 
     // Update is called once per frame
