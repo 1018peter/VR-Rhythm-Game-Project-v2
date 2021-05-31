@@ -9054,7 +9054,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &1282520664
 MeshCollider:
@@ -12775,7 +12775,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &1602284955
 MeshCollider:
@@ -16581,7 +16581,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &1993041037
 MeshCollider:
@@ -18778,6 +18778,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: CombinedMeshes_wallBack
       objectReference: {fileID: 0}
+    - target: {fileID: 3716121937089056773, guid: ff492ac10a5d54442bed124e222c4bf7,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 3951586424024654323, guid: ff492ac10a5d54442bed124e222c4bf7,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331729116306493498, guid: ff492ac10a5d54442bed124e222c4bf7,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4631789465852110246, guid: ff492ac10a5d54442bed124e222c4bf7,
         type: 3}
       propertyPath: m_RootOrder
@@ -18833,6 +18848,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7362115809804735840, guid: ff492ac10a5d54442bed124e222c4bf7,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff492ac10a5d54442bed124e222c4bf7, type: 3}
 --- !u!1001 &5469862833026190370
@@ -18842,10 +18862,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2283542102362462159, guid: 8fb7da301d714bf409c2c50c6e9be1db,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 3365750547541580429, guid: 8fb7da301d714bf409c2c50c6e9be1db,
         type: 3}
       propertyPath: m_Name
       value: CombinedMeshes_wallRight
+      objectReference: {fileID: 0}
+    - target: {fileID: 3365750547541580429, guid: 8fb7da301d714bf409c2c50c6e9be1db,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 3807871677187983713, guid: 8fb7da301d714bf409c2c50c6e9be1db,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 5944783424378156138, guid: 8fb7da301d714bf409c2c50c6e9be1db,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 6699217954757343495, guid: 8fb7da301d714bf409c2c50c6e9be1db,
         type: 3}
@@ -18902,6 +18942,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7510663164570840397, guid: 8fb7da301d714bf409c2c50c6e9be1db,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8fb7da301d714bf409c2c50c6e9be1db, type: 3}
 --- !u!1001 &7548428188991516374
@@ -18911,10 +18956,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1187535846728821113, guid: fcc530ff6e170d244ba36b9ef8db4eb4,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4383760548688351294, guid: fcc530ff6e170d244ba36b9ef8db4eb4,
         type: 3}
       propertyPath: m_Name
       value: CombinedMeshes_wallLeft
+      objectReference: {fileID: 0}
+    - target: {fileID: 4383760548688351294, guid: fcc530ff6e170d244ba36b9ef8db4eb4,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 4387307159995160223, guid: fcc530ff6e170d244ba36b9ef8db4eb4,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 6763616995946897533, guid: fcc530ff6e170d244ba36b9ef8db4eb4,
         type: 3}
@@ -18970,6 +19030,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7618256177357943838, guid: fcc530ff6e170d244ba36b9ef8db4eb4,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938107400074152091, guid: fcc530ff6e170d244ba36b9ef8db4eb4,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fcc530ff6e170d244ba36b9ef8db4eb4, type: 3}
