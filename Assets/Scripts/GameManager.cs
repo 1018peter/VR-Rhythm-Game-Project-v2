@@ -105,10 +105,19 @@ namespace Assets.Scripts
             leftGripRotateEnabled = false;
             rightGripRotateEnabled = false;
             if(currentMenu == mainMenu) return;
-            if(currentMenu != null) currentMenu.Close();
-            currentMenu = mainMenu;
-            state = GameState.MainMenu;
-            currentMenu.Open();
+            if(currentMenu != null){ 
+                currentMenu.Close(delegate () {
+                    currentMenu = mainMenu;
+                    state = GameState.MainMenu;
+                    currentMenu.Open();
+                });
+            }
+            else{
+                currentMenu = mainMenu;
+                state = GameState.MainMenu;
+                currentMenu.Open();
+            }
+            
         }
 
         public void GoToSettings(){
@@ -116,10 +125,18 @@ namespace Assets.Scripts
             leftGripRotateEnabled = false;
             rightGripRotateEnabled = false;
             if(currentMenu == settings) return;
-            if(currentMenu != null) currentMenu.Close();
-            currentMenu = settings;
-            state = GameState.Settings;
-            currentMenu.Open();
+            if(currentMenu != null){ 
+                currentMenu.Close(delegate () {
+                    currentMenu = settings;
+                    state = GameState.Settings;
+                    currentMenu.Open();
+                });
+            }
+            else{
+                currentMenu = settings;
+                state = GameState.Settings;
+                currentMenu.Open();
+            }
         }
 
         public void GoToTrackSelect(){
@@ -127,24 +144,41 @@ namespace Assets.Scripts
             leftGripRotateEnabled = false;
             rightGripRotateEnabled = false;
             if(currentMenu == trackSelect) return;
-            if(currentMenu != null) currentMenu.Close();
-            currentMenu = trackSelect;
-            state = GameState.SelectTrack;
-            currentMenu.Open();
+            if(currentMenu != null){ 
+                currentMenu.Close(delegate () {
+                    currentMenu = trackSelect;
+                    state = GameState.SelectTrack;
+                    currentMenu.Open();
+                });
+            }
+            else{
+                currentMenu = trackSelect;
+                state = GameState.SelectTrack;
+                currentMenu.Open();
+            }
+            
         }
 
         public void GoToIngame(){
             Debug.Log("Go to ingame");
             leftGripRotateEnabled = false;
             rightGripRotateEnabled = false;
-            if(currentMenu != null) currentMenu.Close();
             if(currentMenu == ingame) return;
-            state = GameState.Ingame;
-            currentMenu = ingame;
+            if(currentMenu != null){ 
+                currentMenu.Close(delegate () {
+                    state = GameState.Ingame;
+                    currentMenu = ingame;
+                    currentMenu.Open();
+                });
+            }
+            else{
+                state = GameState.Ingame;
+                currentMenu = ingame;
+                currentMenu.Open();
+            }
             StartCoroutine(SongManager.Instance.orbitManager.RotateAllToInitial(3.0f, delegate () {
                 StartCoroutine(SongManager.Instance.ExecuteBeatmap());
             }));
-            currentMenu.Open();
 
         }
 
@@ -152,14 +186,25 @@ namespace Assets.Scripts
             Debug.Log("Go to results");
             leftGripRotateEnabled = false;
             rightGripRotateEnabled = false;
-            if(currentMenu != null) currentMenu.Close();
             if(currentMenu == results) return;
-            state = GameState.Results;
-            currentMenu = results;
-            
-            StartCoroutine(SongManager.Instance.orbitManager.RotateAllToSideways(1.0f, delegate () {
-                results.Open();
-            }));
+            if(currentMenu != null){ 
+                currentMenu.Close(delegate () {
+                    state = GameState.Results;
+                    currentMenu = results;
+                    
+                    StartCoroutine(SongManager.Instance.orbitManager.RotateAllToSideways(1.0f, delegate () {
+                        results.Open();
+                    }));
+                });
+            }
+            else{
+                state = GameState.Results;
+                currentMenu = results;
+                
+                StartCoroutine(SongManager.Instance.orbitManager.RotateAllToSideways(1.0f, delegate () {
+                    results.Open();
+                }));
+            }
         }
         #endregion
 

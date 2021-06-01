@@ -4,6 +4,7 @@ using UnityEngine;
 using DigitalRuby.Tween;
 using UnityEngine.SceneManagement;
 using UnityEditor;
+using UnityEngine.EventSystems;
 
 namespace Assets.Scripts{
     public class OrbitMenuController : MonoBehaviour
@@ -13,6 +14,7 @@ namespace Assets.Scripts{
         
         public void Open(){
             if(isOpen) return;
+            gameObject.SetActive(true);
             // animator.Play("Menu Appear", 0);
             System.Action<ITween<Vector3>> updatePos = (t) => {
                 transform.localPosition = t.CurrentValue;
@@ -22,7 +24,7 @@ namespace Assets.Scripts{
             };
 
             var start = new Vector3(0, -11.32f, 0);
-            gameObject.Tween("OpenMenu", start, Vector3.zero, 1, TweenScaleFunctions.QuadraticEaseInOut, updatePos, callback);
+            gameObject.Tween("OpenMenu", start, Vector3.zero, 0.5f, TweenScaleFunctions.QuadraticEaseInOut, updatePos, callback);
             isOpen = true;
 
         }
@@ -34,7 +36,7 @@ namespace Assets.Scripts{
 
         }
 
-        public void Close(){
+        public void Close(System.Action callback){
             if(!isOpen) return;
             foreach(var UIelement in UIelements){
                 UIelement.activated = false;
@@ -44,8 +46,14 @@ namespace Assets.Scripts{
                 transform.localPosition = t.CurrentValue;
             };
 
+            System.Action<ITween<Vector3>> disableAfterClose = (t) => {
+                gameObject.SetActive(false);
+                callback();
+            };
+
+
             var end = new Vector3(0, -11.32f, 0);
-            gameObject.Tween("CloseMenu", Vector3.zero, end, 1, TweenScaleFunctions.QuadraticEaseInOut, updatePos);
+            gameObject.Tween("CloseMenu", Vector3.zero, end, 0.5f, TweenScaleFunctions.QuadraticEaseInOut, updatePos, disableAfterClose);
             isOpen = false;
         }
         
@@ -54,9 +62,11 @@ namespace Assets.Scripts{
         {
             if(isOpen){
                 transform.localPosition = Vector3.zero;
+                gameObject.SetActive(true);
             }
             else{
                 transform.localPosition = new Vector3(0, -11.32f, 0);
+                gameObject.SetActive(false);
             }
             UIelements = new List<OrbitUIController>(GetComponentsInChildren<OrbitUIController>());
             Debug.Log($"Found {UIelements.Count} UI elements in {gameObject.name}");
