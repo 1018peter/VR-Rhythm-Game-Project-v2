@@ -210,6 +210,7 @@ namespace Assets.Scripts
             for(float t = (songPosInBeats - beatPos) / beatsShownInAdvance; t < 1; t = (songPosInBeats - beatPos) / beatsShownInAdvance){
                 note.transform.localRotation = Quaternion.Euler(0, 0, Mathf.LerpAngle(startAngle, endAngle, t));
                 yield return new WaitForEndOfFrame();
+                if(note == null) break;
             }
         }
         public void SpawnOrbitNodeMoving(Transform anchor, float orbitAngleStart, float orbitAngleEnd){

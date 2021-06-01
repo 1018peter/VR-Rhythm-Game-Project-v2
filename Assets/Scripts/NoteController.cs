@@ -21,7 +21,10 @@ namespace Assets.Scripts
         }
 
 
-        private void HitCheck(){
+        public void HitCheck(){
+            if(hasBeenHit) return;
+            hasBeenHit = true;
+
             float delta = (SongManager.Instance.songPosInBeats - beatPos) / SongManager.Instance.beatsShownInAdvance;
             if(delta > 2 || delta < -1){
                 SongManager.Instance.RegisterMiss();
@@ -36,19 +39,12 @@ namespace Assets.Scripts
                 SongManager.Instance.RegisterPerfect();
             }
             
+            if(destroyTarget == null)
+                Destroy(this.gameObject);
+            else Destroy(destroyTarget);
 
         }
 
-        // Use this for note hit logic. Whatever the player is using to hit the note with should be tagged with "Player" and have a collider.
-        private void OnTriggerEnter(Collider other) {
-            if(other.CompareTag("Player") && !hasBeenHit){
-                hasBeenHit = true;
-                HitCheck();
-                if(destroyTarget == null)
-                    Destroy(this.gameObject);
-                else Destroy(destroyTarget);
-            }   
-        }
 
         // Update is called once per frame
         void Update()
