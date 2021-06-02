@@ -727,7 +727,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.119
-  m_Pitch: 3
+  m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -8866,7 +8866,7 @@ MonoBehaviour:
   playerLeftController: {fileID: 724736366}
   playerRightController: {fileID: 1279433633}
   playerDeviceTransform: {fileID: 1045848416}
-  playerMaxReach: 1
+  playerMaxReach: 1.5
   gripRotateAngularSpeed: 10
 --- !u!4 &1584722655
 Transform:

@@ -26,13 +26,10 @@ namespace Assets.Scripts
             hasBeenHit = true;
 
             float delta = (SongManager.Instance.songPosInBeats - beatPos) / SongManager.Instance.beatsShownInAdvance;
-            if(delta > 2 || delta < -1){
-                SongManager.Instance.RegisterMiss();
-            }
-            else if(delta > 1.25 || delta < -0.5){
+            if(delta > 0.75 || delta < -0.5){
                 SongManager.Instance.RegisterBad();
             }
-            else if(delta > 0.5 || delta < -0.25){
+            else if(delta > 0.4 || delta < -0.25){
                 SongManager.Instance.RegisterGood();
             }
             else{
