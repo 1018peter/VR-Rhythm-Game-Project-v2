@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Oculus Settings
   m_EditorClassIdentifier: 
   m_StereoRenderingModeDesktop: 1
-  m_StereoRenderingModeAndroid: 2
+  m_StereoRenderingModeAndroid: 0
   SharedDepthBuffer: 1
   DashSupport: 1
   V2Signing: 1
@@ -22,5 +22,5 @@ MonoBehaviour:
   FocusAware: 1
   OptimizeBufferDiscards: 1
   PhaseSync: 0
-  TargetQuest: 1
+  TargetQuest: 0
   TargetQuest2: 1
