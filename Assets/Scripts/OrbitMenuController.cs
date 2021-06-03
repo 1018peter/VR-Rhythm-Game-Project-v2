@@ -20,9 +20,12 @@ namespace Assets.Scripts{
                 transform.localPosition = t.CurrentValue;
             };
             System.Action<ITween<Vector3>> callback = t => {
-                AfterOpen();
+                // AfterOpen();
             };
-
+            
+            foreach(var UIelement in UIelements){
+                UIelement.activated = true;
+            }
             var start = new Vector3(0, -11.32f, 0);
             gameObject.Tween("OpenMenu", start, Vector3.zero, 0.5f, TweenScaleFunctions.QuadraticEaseInOut, updatePos, callback);
             isOpen = true;

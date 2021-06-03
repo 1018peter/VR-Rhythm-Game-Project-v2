@@ -100,6 +100,14 @@ namespace Assets.Scripts
 
         #region Menu State Transition Functions
 
+        public void LeftConfirm(){
+            OrbitUIController.LeftConfirm();
+        }
+
+        public void RightConfirm(){
+            OrbitUIController.RightConfirm();
+        }
+
         public void GoToMainMenu(){
             Debug.Log("Go to main menu");
             leftGripRotateEnabled = false;
@@ -234,13 +242,11 @@ namespace Assets.Scripts
         {
             if(rightGripRotateEnabled && !leftGripRotateEnabled){ // RightGripRotate
                 var theta = Vector3.SignedAngle(new Vector3(rightGripRotateOrigin.x, 0, rightGripRotateOrigin.z), new Vector3(playerRightController.position.x, 0, playerRightController.position.z), Vector3.up);
-                Debug.Log(theta);
                 currentMenu.transform.localRotation = Quaternion.Euler(0, gripRotateStart.eulerAngles.y + theta, 0);
                 
             }
             else if(leftGripRotateEnabled && !rightGripRotateEnabled){ // LeftGripRotate
                 var theta = Vector3.SignedAngle(new Vector3(leftGripRotateOrigin.x, 0, leftGripRotateOrigin.z), new Vector3(playerLeftController.position.x, 0, playerLeftController.position.z), Vector3.up);
-                Debug.Log(theta);
                 currentMenu.transform.localRotation = Quaternion.Euler(0, gripRotateStart.eulerAngles.y + theta, 0);
                 
             }

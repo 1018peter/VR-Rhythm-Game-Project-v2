@@ -363,7 +363,7 @@
                 {
                     "name": "",
                     "id": "b9fa28ef-f79d-4321-81ef-94a23155862a",
-                    "path": "<XRSimulatedController>{LeftHand}/grip",
+                    "path": "<XRController>{LeftHand}/grip",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",

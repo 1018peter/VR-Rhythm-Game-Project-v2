@@ -11,7 +11,27 @@ namespace Assets.Scripts{
         public UnityEvent onConfirm;
         public bool activated = true;
 
-        public bool selected = false;
+
+        public static OrbitUIController rightSelected = null;
+        public static OrbitUIController leftSelected = null;
+
+        public static void RightConfirm(){
+            if(rightSelected != null){
+                rightSelected.onConfirm.Invoke();
+                rightSelected.widget.Deactivate();
+                leftSelected = null;
+                rightSelected = null;
+            }
+        }
+
+        public static void LeftConfirm(){
+            if(leftSelected != null){
+                leftSelected.onConfirm.Invoke();
+                leftSelected.widget.Deactivate();
+                leftSelected = null;
+                rightSelected = null;
+            }
+        }
 
         // Start is called before the first frame update
         void Start()
@@ -24,25 +44,30 @@ namespace Assets.Scripts{
         private void OnTriggerEnter(Collider other) {
             if(!activated) return;
 
-            if(!selected){
-                Debug.Log("UI Selected");
-                onSelect.Invoke();
-                selected = true;
-                widget.Activate();
+            Debug.Log("UI Selected");
+            onSelect.Invoke();
+            if(other.gameObject.name.StartsWith("Left")){
+                leftSelected = this;
             }
             else{
-                onConfirm.Invoke();
-                selected = false;
-                widget.Deactivate();
+                rightSelected = this;
             }
+            widget.Activate();
         }
 
         private void OnTriggerExit(Collider other) {
             if(!activated) return;
             
             Debug.Log("UI Un-triggered");
-            widget.Deactivate();
-            selected = false;
+            if(other.gameObject.name.StartsWith("Left")){
+                widget.Deactivate();
+                leftSelected = null;
+            }
+            else{
+                widget.Deactivate();
+                rightSelected = null;
+            }
+
         }
 
         // Update is called once per frame
