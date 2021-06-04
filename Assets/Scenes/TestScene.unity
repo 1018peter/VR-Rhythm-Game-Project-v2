@@ -1115,7 +1115,7 @@ Transform:
   m_GameObject: {fileID: 254963730}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -14.4, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.30084, y: 0.30084, z: 0.30084}
   m_Children:
   - {fileID: 1237392275}
   m_Father: {fileID: 0}
@@ -3267,7 +3267,7 @@ Transform:
   m_GameObject: {fileID: 917917842}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -14.4, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.30084, y: 0.30084, z: 0.30084}
   m_Children:
   - {fileID: 2012758852}
   m_Father: {fileID: 0}
@@ -3548,6 +3548,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Position
       m_Flags: 0
+    - m_Name: 
+      m_Id: 0a24eb81-d8d5-4d77-8e23-6eff76628cf9
+      m_Path: <OculusHMD>/centerEyePosition
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Position
+      m_Flags: 0
   m_RotationAction:
     m_Name: Rotation
     m_Type: 0
@@ -3559,6 +3567,14 @@ MonoBehaviour:
     - m_Name: 
       m_Id: 8a47ea1a-f9b4-4994-9d4a-242813dd9978
       m_Path: <XRHMD>/centerEyeRotation
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Rotation
+      m_Flags: 0
+    - m_Name: 
+      m_Id: b07eb194-72e9-4061-9cdd-6143a1d23d70
+      m_Path: <OculusHMD>/centerEyeRotation
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -4545,7 +4561,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1045848415}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.36144, z: 0}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 962013121}
@@ -7785,7 +7801,7 @@ MonoBehaviour:
   playerLeftController: {fileID: 724736366}
   playerRightController: {fileID: 1279433633}
   playerDeviceTransform: {fileID: 1045848416}
-  playerMaxReach: 1.5
+  playerMaxReach: 1.3
   gripRotateAngularSpeed: 10
 --- !u!4 &1584722655
 Transform:
@@ -8899,7 +8915,7 @@ MonoBehaviour:
   m_RequestedTrackingMode: 1
   m_TrackingOriginMode: 1
   m_TrackingSpace: 0
-  m_CameraYOffset: 1.36144
+  m_CameraYOffset: 0.2
 --- !u!4 &1725982594
 Transform:
   m_ObjectHideFlags: 0
@@ -9584,7 +9600,7 @@ Transform:
   m_GameObject: {fileID: 1805517115}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -14.4, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.30084, y: 0.30084, z: 0.30084}
   m_Children:
   - {fileID: 1126150779}
   m_Father: {fileID: 0}
@@ -10169,7 +10185,7 @@ Transform:
   m_GameObject: {fileID: 1944969090}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.30084, y: 0.30084, z: 0.30084}
   m_Children:
   - {fileID: 928336016}
   - {fileID: 1221413801}
@@ -10234,7 +10250,7 @@ Transform:
   m_GameObject: {fileID: 1946960970}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -14.4, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.30084, y: 0.30084, z: 0.30084}
   m_Children:
   - {fileID: 1594446394}
   m_Father: {fileID: 0}
@@ -10729,7 +10745,7 @@ Transform:
   m_GameObject: {fileID: 1994341033}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -14.4, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.30084, y: 0.30084, z: 0.30084}
   m_Children:
   - {fileID: 423497145}
   m_Father: {fileID: 0}
