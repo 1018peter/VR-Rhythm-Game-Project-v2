@@ -8,8 +8,12 @@ namespace Assets.Scripts{
     {
         public UIWidget widget;
         public UnityEvent onSelect;
+
+        public UnityEvent onDeselect;
         public UnityEvent onConfirm;
         public bool activated = true;
+
+        public bool deactivateWidgetOnConfirm = true;
 
 
         public static OrbitUIController rightSelected = null;
@@ -17,19 +21,25 @@ namespace Assets.Scripts{
 
         public static void RightConfirm(){
             if(rightSelected != null){
+                SongManager.Instance.playUIconfirm();
                 rightSelected.onConfirm.Invoke();
-                rightSelected.widget.Deactivate();
-                leftSelected = null;
-                rightSelected = null;
+                if(rightSelected.deactivateWidgetOnConfirm){
+                    rightSelected.widget.Deactivate();
+                    leftSelected = null;
+                    rightSelected = null;
+                }
             }
         }
 
         public static void LeftConfirm(){
             if(leftSelected != null){
+                SongManager.Instance.playUIconfirm();
                 leftSelected.onConfirm.Invoke();
-                leftSelected.widget.Deactivate();
-                leftSelected = null;
-                rightSelected = null;
+                if(leftSelected.deactivateWidgetOnConfirm){
+                    leftSelected.widget.Deactivate();
+                    leftSelected = null;
+                    rightSelected = null;
+                }
             }
         }
 
@@ -59,6 +69,7 @@ namespace Assets.Scripts{
             if(!activated) return;
             
             Debug.Log("UI Un-triggered");
+            onDeselect.Invoke();
             if(other.gameObject.name.StartsWith("Left")){
                 widget.Deactivate();
                 leftSelected = null;

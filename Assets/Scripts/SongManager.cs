@@ -26,11 +26,16 @@ namespace Assets.Scripts
         public AudioSource globalAudio;
 
         public AudioClip onUIActivate;
+        public AudioClip onUIConfirm;
         public AudioClip onUIDeactivate;
 
         #region Audio Utilities
         public void playUIactivate(){
             globalAudio.PlayOneShot(onUIActivate);
+        }
+
+        public void playUIconfirm(){
+            globalAudio.PlayOneShot(onUIConfirm);
         }
 
         public void playUIdeactivate(){
@@ -77,6 +82,8 @@ namespace Assets.Scripts
         
         [Tooltip("For testing: The default beatmap to execute.")]
         public Beatmap defaultBeatmap;
+        [Tooltip("The parent gameObject of all beatmaps.")]
+        public GameObject beatmapGroup;
 
 
 
@@ -362,6 +369,17 @@ namespace Assets.Scripts
 
         }
 
+        public void PlayPreview(){
+            globalAudio.Stop();
+            globalAudio.Play();
+            globalAudio.loop = true;
+        }
+
+        public void StopPreview(){
+            globalAudio.Stop();
+            globalAudio.loop = false;
+        }
+
         public IEnumerator ExecuteImmediateEvents(){
             nextCommandIndex = 0;
             while(nextCommandIndex < immediateCommands.Count){
@@ -414,6 +432,7 @@ namespace Assets.Scripts
                 ComputeScore());
             currentBeatmap.localRecords.Add(results);
             ResultsUIController.Instance.Write();
+            currentBeatmap.SaveRecords();
             GameManager.Instance.GoToResults();
 
         }
@@ -437,7 +456,9 @@ namespace Assets.Scripts
         #endregion
 
         #region Scoring Utilities
+        [NonSerialized]
         public BeatmapRecord results;
+        [NonSerialized]
         public int missCount = 0, badCount = 0, goodCount = 0, perfectCount = 0, comboCount = 0, maxCombo = 0;
         private List<int> comboSegmentScores = new List<int>();
         private void ResetCounts(){

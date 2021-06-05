@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.IO;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
 using UnityEditor;
+using TMPro;
 namespace Assets.Scripts
 {
     public class BeatmapRecord : IComparable {
@@ -38,11 +41,66 @@ namespace Assets.Scripts
 
         public SortedSet<BeatmapRecord> localRecords = new SortedSet<BeatmapRecord>();
 
+        private string dataPath{
+            get{
+                return $@"Assets/GameData/BeatmapRecords/{gameObject.name}.txt";
+            }
+        }
+
+        public void FetchRecords(TextMeshPro target){
+            target.text = $"Local Record\n{localRecords.Min.score.ToString("D6")}";
+
+        }
+
+        public void LoadRecords(){
+            localRecords.Clear();
+            if(!File.Exists(dataPath)){
+               using(StreamWriter sw = File.CreateText(dataPath)){
+                   sw.WriteLine("0 0 0 0 0 0");
+               } 
+            }
+
+            using(StreamReader sr = File.OpenText(dataPath)){
+                string line;
+                while((line = sr.ReadLine()) != null){
+                    string[] tokens = line.Split(' ');
+                    if(tokens.Length != 6){
+                        throw new Exception("Record data format error at " + dataPath);
+                    }
+                    localRecords.Add(new BeatmapRecord(
+                        Convert.ToInt32(tokens[0]), 
+                        Convert.ToInt32(tokens[1]), 
+                        Convert.ToInt32(tokens[2]), 
+                        Convert.ToInt32(tokens[3]), 
+                        Convert.ToInt32(tokens[4]), 
+                        Convert.ToInt32(tokens[5])));
+                }
+            }
+        }
+
+        public void SaveRecords(){
+            if(File.Exists(dataPath)) File.Delete(dataPath);
+            using(StreamWriter sw = File.CreateText(dataPath)){
+                foreach(var record in localRecords){
+                    sw.WriteLine($@"{record.missCount} {record.badCount} {record.goodCount} {record.perfectCount} {record.maxCombo} {record.score}");
+                }
+            }
+        }
+
+        public void ClearRecords(){
+            localRecords.Clear();
+            localRecords.Add(new BeatmapRecord(0, 0, 0, 0, 0, 0));
+            SaveRecords();
+        }
+
+
         // Use this for initialization
         void Start()
         {
             Assert.IsNotNull(song, $"Clip for {gameObject.name} is not set.");
             Assert.IsNotNull(script, $"Script for {gameObject.name} is not set.");
+            LoadRecords();
+            
         }
 
         // Update is called once per frame

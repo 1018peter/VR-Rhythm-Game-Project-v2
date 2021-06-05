@@ -169,6 +169,7 @@ namespace Assets.Scripts
 
         public void GoToIngame(){
             Debug.Log("Go to ingame");
+            SongManager.Instance.StopPreview();
             leftGripRotateEnabled = false;
             rightGripRotateEnabled = false;
             if(currentMenu == ingame) return;
@@ -212,6 +213,14 @@ namespace Assets.Scripts
                 StartCoroutine(SongManager.Instance.orbitManager.RotateAllToSideways(1.0f, delegate () {
                     results.Open();
                 }));
+            }
+        }
+        #endregion
+
+        #region 
+        public void DeleteAllRecords(){
+            foreach(var beatmap in SongManager.Instance.beatmapGroup.GetComponentsInChildren<Beatmap>()){
+                beatmap.ClearRecords();
             }
         }
         #endregion
