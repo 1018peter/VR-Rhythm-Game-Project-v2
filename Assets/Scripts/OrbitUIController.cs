@@ -66,7 +66,6 @@ namespace Assets.Scripts{
         }
 
         private void OnTriggerExit(Collider other) {
-            if(!activated) return;
             
             Debug.Log("UI Un-triggered");
             onDeselect.Invoke();

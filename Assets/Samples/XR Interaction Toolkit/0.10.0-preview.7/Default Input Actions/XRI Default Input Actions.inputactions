@@ -36,11 +36,33 @@
                 },
                 {
                     "name": "",
+                    "id": "682ccceb-b999-47a9-8c9a-648e7294382a",
+                    "path": "<OculusHMD>/centerEyePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "e2017383-a3f6-4c46-acb1-012b8eece9cc",
                     "path": "<XRHMD>/centerEyeRotation",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
+                    "action": "Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bf6e6b39-627b-4250-a4a0-36b3dd7b6275",
+                    "path": "<OculusHMD>/centerEyeRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Rotation",
                     "isComposite": false,
                     "isPartOfComposite": false
