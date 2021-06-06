@@ -864,37 +864,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &109255592
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 1132492312}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 109255593}
-  m_Layer: 0
-  m_Name: Diamond Note (Missing Prefab)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &109255593
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 1132492312}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 109255592}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1132492315}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &190955951
 GameObject:
   m_ObjectHideFlags: 0
@@ -3517,7 +3486,7 @@ Transform:
   m_GameObject: {fileID: 787969167}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 3.54}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 1, z: 0}
   m_Children:
   - {fileID: 1639798046}
   - {fileID: 1644587655}
@@ -4137,7 +4106,7 @@ MonoBehaviour:
       m_Flags: 0
     - m_Name: 
       m_Id: 0a24eb81-d8d5-4d77-8e23-6eff76628cf9
-      m_Path: <OculusHMD>/centerEyePosition
+      m_Path: <OculusHMD>/devicePosition
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -4161,15 +4130,7 @@ MonoBehaviour:
       m_Flags: 0
     - m_Name: 
       m_Id: b07eb194-72e9-4061-9cdd-6143a1d23d70
-      m_Path: <OculusHMD>/centerEyeRotation
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Rotation
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 491e5d30-9b45-4ead-a018-2a0e6ec50acf
-      m_Path: <XRHMD>/centerEyeRotation
+      m_Path: <OculusHMD>/deviceRotation
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -5298,24 +5259,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae9920632120150408ff10e52513ed85, type: 3}
---- !u!1 &1132492313
+--- !u!1 &1132492313 stripped
 GameObject:
-  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ae9920632120150408ff10e52513ed85,
     type: 3}
   m_PrefabInstance: {fileID: 1132492312}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1132492315}
-  - component: {fileID: 1132492314}
-  m_Layer: 0
-  m_Name: Missing Prefab (Dummy)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
 --- !u!64 &1132492314
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5330,20 +5279,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4711208715938537054, guid: ae9920632120150408ff10e52513ed85, type: 3}
---- !u!4 &1132492315
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 1132492312}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1132492313}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 109255593}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1143250220
 GameObject:
   m_ObjectHideFlags: 0
@@ -14807,7 +14742,7 @@ Transform:
   m_LocalRotation: {x: 0.000000029802315, y: -0.000000008796236, z: 0.000000014148564,
     w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1.830001}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 1, z: 0}
   m_Children:
   - {fileID: 1816427201755740119}
   m_Father: {fileID: 797796194}
