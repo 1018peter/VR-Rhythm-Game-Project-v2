@@ -11,14 +11,14 @@ namespace Assets.Scripts{
         // Start is called before the first frame update
         void Start()
         {
-            float scaleFactor = GameManager.Instance.playerMaxReach / Mathf.Abs(transform.localPosition.y);
-            transform.parent.localScale = new Vector3(1, scaleFactor, 1);
+            float scaleFactor = GameManager.Instance.playerMaxReach / Mathf.Abs(transform.parent.localPosition.y);
+            transform.parent.parent.localScale = new Vector3(1, scaleFactor, 1);
             if(attachedNote == null)
-                attachedNote = transform.parent.GetComponentInChildren<NoteController>();
+                attachedNote = transform.parent.parent.GetComponentInChildren<NoteController>();
             if(scaleWithAttachedNote)
-                transform.localScale = attachedNote.transform.localScale * scaleFactor;
+                transform.parent.localScale = attachedNote.transform.localScale * scaleFactor;
             else
-                transform.localScale = transform.parent.localScale;
+                transform.parent.localScale = transform.parent.parent.localScale;
         }
 
 
@@ -31,12 +31,12 @@ namespace Assets.Scripts{
         // Update is called once per frame
         void Update()
         {
-            float scaleFactor = GameManager.Instance.playerMaxReach / Mathf.Abs(transform.localPosition.y);
-            transform.parent.localScale = new Vector3(1, scaleFactor, 1);
+            float scaleFactor = GameManager.Instance.playerMaxReach / Mathf.Abs(transform.parent.localPosition.y);
+            transform.parent.parent.localScale = new Vector3(1, scaleFactor, 1);
             if(scaleWithAttachedNote)
-                transform.localScale = attachedNote.transform.localScale * scaleFactor;
+                transform.parent.localScale = attachedNote.transform.localScale * scaleFactor;
             else
-                transform.localScale = transform.parent.localScale;
+                transform.parent.localScale = transform.parent.parent.localScale;
         }
     }
 }
