@@ -706,7 +706,7 @@ MonoBehaviour:
   orbitNote: {fileID: 2094680578474471918, guid: cae463c5a2dbced4a842a4ed9e22a63c,
     type: 3}
   tapNote: {fileID: 569773327671558008, guid: d517c2bcde7a7b24b90f7664ff4d8e13, type: 3}
-  particlesOnHit: {fileID: 2840092047611620489, guid: 8dd90807b6379d34da9e17f96ed0b2e8,
+  particlesOnHit: {fileID: 1565292474981304546, guid: 1ffaf1f2e14bc5b42ad4bb71de3fb7ba,
     type: 3}
   particlesOnHitLifespan: 0.5
   bpm: 175
