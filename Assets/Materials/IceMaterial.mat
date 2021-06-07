@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: IceMaterial - testing
-  m_Shader: {fileID: -6465566751694194690, guid: 8f639e5eaf57c1b4685551e04407065b,
+  m_Name: IceMaterial
+  m_Shader: {fileID: -6465566751694194690, guid: d87fc088f0bc8814083fd4bad268a03d,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -68,11 +68,9 @@ Material:
     m_Floats:
     - Vector1_2B8E94A8: 0
     - Vector1_57D78EA0: 0
-    - Vector1_64034244: 0.408
-    - Vector1_66019349: 0
-    - Vector1_7768988C: 1
-    - Vector1_859943B8: 2.68
-    - Vector1_EA70D129: 2.74
+    - Vector1_64034244: 0.651
+    - Vector1_66019349: -0.38
+    - Vector1_859943B8: 2.86
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -95,10 +93,9 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_335073BE: {r: 1, g: 1, b: 1, a: 1}
-    - Color_4B8845E5: {r: 2.1344485, g: 3.4519386, b: 4.2913647, a: 0.85882354}
-    - Color_9EF311FB: {r: 0, g: 0, b: 0, a: 0}
-    - Vector2_9AD7CC8D: {r: 1.14, g: 2.1, b: 0, a: 0}
+    - Color_335073BE: {r: 1, g: 1, b: 1, a: 0}
+    - Color_4B8845E5: {r: 1.8739551, g: 2.7568765, b: 3.4415908, a: 0.84313726}
+    - Vector2_9AD7CC8D: {r: 1.52, g: 2.2, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
