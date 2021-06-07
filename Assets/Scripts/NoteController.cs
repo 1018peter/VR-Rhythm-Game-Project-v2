@@ -24,7 +24,8 @@ namespace Assets.Scripts
         public void HitCheck(){
             if(hasBeenHit) return;
             hasBeenHit = true;
-
+            SongManager.Instance.createParticlesOnHit(transform.position, transform.rotation);
+            
             float delta = (SongManager.Instance.songPosInBeats - beatPos) / SongManager.Instance.beatsShownInAdvance;
             if(delta > 0.75 || delta < -0.5){
                 SongManager.Instance.RegisterBad();
