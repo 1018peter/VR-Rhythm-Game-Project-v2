@@ -1347,7 +1347,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 122d800969dc14042879b233c7350378,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 122d800969dc14042879b233c7350378,
         type: 3}
@@ -6693,7 +6693,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: d278ebb53c9e4b8419e3d4cda6072883,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d278ebb53c9e4b8419e3d4cda6072883,
         type: 3}
@@ -6953,7 +6953,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: d278ebb53c9e4b8419e3d4cda6072883,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d278ebb53c9e4b8419e3d4cda6072883,
         type: 3}
@@ -7614,7 +7614,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 122d800969dc14042879b233c7350378,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 122d800969dc14042879b233c7350378,
         type: 3}
@@ -8282,7 +8282,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: d278ebb53c9e4b8419e3d4cda6072883,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d278ebb53c9e4b8419e3d4cda6072883,
         type: 3}
@@ -9873,7 +9873,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 122d800969dc14042879b233c7350378,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 122d800969dc14042879b233c7350378,
         type: 3}
