@@ -49,6 +49,10 @@ namespace Assets.Scripts
 
         public GameObject tapNote;
 
+        [Header("Particles")]
+        public GameObject particlesOnHit;
+        public float particlesOnHitLifespan = 0.5f;
+
         #region Readonly Variables
         
         //the offset time until the first beat of the song (in seconds)
@@ -136,6 +140,18 @@ namespace Assets.Scripts
 
         }
 
+        #endregion
+
+        #region FX Utilities
+
+        private IEnumerator destroyParticlesAfterSeconds(float t, GameObject targetParticles){
+            yield return new WaitForSecondsRealtime(t);
+            Destroy(targetParticles);
+        }
+        public void createParticlesOnHit(Vector3 position, Quaternion rotation){
+            StartCoroutine(destroyParticlesAfterSeconds(particlesOnHitLifespan, Instantiate(particlesOnHit, position, rotation)));
+            
+        }
         #endregion
 
         #region Rotation Utilities
