@@ -161,30 +161,28 @@ namespace Assets.Scripts
             float duration = beats / bpm * 60;
             float t = 0;
             float startAngle = orbit.rotation.eulerAngles.z;
+            float offsetAngle = endAngle - startAngle;
+            Quaternion endRotation = Quaternion.AngleAxis(offsetAngle, orbit.forward);
+            Quaternion startRotation = orbit.rotation;
             while(t / duration < 1){
-                orbit.rotation = Quaternion.Euler(
-                    orbit.rotation.eulerAngles.x,
-                    orbit.rotation.eulerAngles.y,
-                    Mathf.LerpAngle(startAngle, endAngle, t / duration));
+                orbit.rotation = Quaternion.Slerp(startRotation, endRotation, t);
                 yield return new WaitForEndOfFrame();
                 t += Time.deltaTime;
             }
-
+            orbit.rotation = endRotation;
         }
         public IEnumerator RotateOrbitForwardOffset(Transform orbit, int beats, float offsetAngle){
              // Internal: Rotates around the forward axis.
             float duration = beats / bpm * 60;
             float t = 0;
-            float startAngle = orbit.rotation.eulerAngles.z;
-            float endAngle = startAngle + offsetAngle;
+            Quaternion endRotation = Quaternion.AngleAxis(offsetAngle, orbit.forward);
+            Quaternion startRotation = orbit.rotation;
             while(t / duration < 1){
-                orbit.rotation = Quaternion.Euler(
-                    orbit.rotation.eulerAngles.x,
-                    orbit.rotation.eulerAngles.y,
-                    Mathf.LerpAngle(startAngle, endAngle, t / duration));
+                orbit.rotation = Quaternion.Slerp(startRotation, endRotation, t);
                 yield return new WaitForEndOfFrame();
                 t += Time.deltaTime;
             }
+            orbit.rotation = endRotation;
         }
 
         public IEnumerator RotateOrbitUp(Transform orbit, int beats, float endAngle){
@@ -192,29 +190,57 @@ namespace Assets.Scripts
             float duration = beats / bpm * 60;
             float t = 0;
             float startAngle = orbit.rotation.eulerAngles.y;
+            float offsetAngle = endAngle - startAngle;
+            Quaternion endRotation = Quaternion.AngleAxis(offsetAngle, orbit.up);
+            Quaternion startRotation = orbit.rotation;
             while(t / duration < 1){
-                orbit.rotation = Quaternion.Euler(
-                    orbit.rotation.eulerAngles.x,
-                    Mathf.LerpAngle(startAngle, endAngle, t / duration),
-                    orbit.rotation.eulerAngles.z);
+                orbit.rotation = Quaternion.Slerp(startRotation, endRotation, t);
                 yield return new WaitForEndOfFrame();
                 t += Time.deltaTime;
             }
+            orbit.rotation = endRotation;
         }
         public IEnumerator RotateOrbitUpOffset(Transform orbit, int beats, float offsetAngle){
             // Internal: Rotates around the up axis. (The axis that goes through the flat side.)
             float duration = beats / bpm * 60;
             float t = 0;
-            float startAngle = orbit.rotation.eulerAngles.y;
-            float endAngle = startAngle + offsetAngle;
+            Quaternion endRotation = Quaternion.AngleAxis(offsetAngle, orbit.up);
+            Quaternion startRotation = orbit.rotation;
             while(t / duration < 1){
-                orbit.rotation = Quaternion.Euler(
-                    orbit.rotation.eulerAngles.x,
-                    Mathf.LerpAngle(startAngle, endAngle, t / duration),
-                    orbit.rotation.eulerAngles.z);
+                orbit.rotation = Quaternion.Slerp(startRotation, endRotation, t);
                 yield return new WaitForEndOfFrame();
                 t += Time.deltaTime;
             }
+            orbit.rotation = endRotation;
+        }
+
+        public IEnumerator RotateOrbitRight(Transform orbit, int beats, float endAngle){
+            // Internal: Rotates around the right axis.
+            float duration = beats / bpm * 60;
+            float t = 0;
+            float startAngle = orbit.rotation.eulerAngles.x;
+            float offsetAngle = endAngle - startAngle;
+            Quaternion endRotation = Quaternion.AngleAxis(offsetAngle, orbit.right);
+            Quaternion startRotation = orbit.rotation;
+            while(t / duration < 1){
+                orbit.rotation = Quaternion.Slerp(startRotation, endRotation, t);
+                yield return new WaitForEndOfFrame();
+                t += Time.deltaTime;
+            }
+            orbit.rotation = endRotation;
+        }
+        public IEnumerator RotateOrbitRightOffset(Transform orbit, int beats, float offsetAngle){
+            // Internal: Rotates around the right axis.
+            float duration = beats / bpm * 60;
+            float t = 0;
+            Quaternion endRotation = Quaternion.AngleAxis(offsetAngle, orbit.right);
+            Quaternion startRotation = orbit.rotation;
+            while(t / duration < 1){
+                orbit.rotation = Quaternion.Slerp(startRotation, endRotation, t);
+                yield return new WaitForEndOfFrame();
+                t += Time.deltaTime;
+            }
+            orbit.rotation = endRotation;
         }
 
         public void SpawnOrbitNodeInPlace(Transform anchor, float orbitAngle){
@@ -330,7 +356,20 @@ namespace Assets.Scripts
                         immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateOrbitUpOffset(targetOrbit, Convert.ToInt32(tokens[3]), Convert.ToSingle(tokens[4]))); }));
 
                         break;
-                   
+                    case "ROTATE_RIGHT_TO":
+                        Assert.IsTrue(parameterCount == 4, $"Line {lineCount}: ROTATE_UP_TO expects exactly 4 parameters (timestamp, orbit color(R/G/B), rotation duration in beats, resulting rotation in degrees). {parameterCount} was found.");
+                        targetOrbit = decodeOrbitColor(tokens[2]);
+                        Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateOrbitRight(targetOrbit, Convert.ToInt32(tokens[3]), Convert.ToSingle(tokens[4]))); }));
+
+                        break;
+                    case "ROTATE_RIGHT_BY":
+                        Assert.IsTrue(parameterCount == 4, $"Line {lineCount}: ROTATE_UP_BY expects exactly 4 parameters (timestamp, orbit color(R/G/B), rotation duration in beats, offset rotation in degrees). {parameterCount} was found.");
+                        targetOrbit = decodeOrbitColor(tokens[2]);
+                        Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateOrbitRightOffset(targetOrbit, Convert.ToInt32(tokens[3]), Convert.ToSingle(tokens[4]))); }));
+
+                        break;
                     case "ORBITNOTE_FIXED":
                         Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: ORBITNOTE_FIXED expects exactly 3 parameters (timestamp, orbit color(R/G/B), position on orbit in degrees). {parameterCount} was found.");
                         targetOrbit = decodeOrbitColor(tokens[2]);

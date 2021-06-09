@@ -20,7 +20,7 @@ public class OrbitManager : MonoBehaviour
     
     Quaternion initialRotationB = Quaternion.Euler(-90, 0, 0);
     Quaternion initialRotationR = Quaternion.Euler(0, 0, 0);
-    Quaternion initialRotationG = Quaternion.Euler(0, 90, -90);
+    Quaternion initialRotationG = Quaternion.Euler(0, 90, 0);
 
 
     public IEnumerator RotateAllToInitial(float timeInSeconds, Action callback){
