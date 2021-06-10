@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.XR;
 
 namespace Assets.Scripts{
     public class NoteCollider : MonoBehaviour
@@ -24,8 +24,16 @@ namespace Assets.Scripts{
 
         private void OnTriggerEnter(Collider other) {
             if(other.CompareTag("Player")){
-                this.enabled = false;
-                attachedNote.HitCheck();
+                if(other.name.StartsWith("Left") && GameManager.Instance.IsLeftHandStrikingOutwards()){
+                    
+                    this.enabled = false;
+                    attachedNote.HitCheck();
+                }
+                else if(other.name.StartsWith("Right") && GameManager.Instance.IsRightHandStrikingOutwards()){
+                    this.enabled = false;
+                    attachedNote.HitCheck();
+
+                }
             }
         }
         // Update is called once per frame

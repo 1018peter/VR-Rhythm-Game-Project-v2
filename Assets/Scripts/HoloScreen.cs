@@ -17,13 +17,15 @@ namespace Assets.Scripts{
             animator.Play("Panel Disappear", 0);
         }
 
+        private void Awake() {
+            animator = GetComponent<Animator>();
+            transform.localScale = new Vector3(0, 0, 1);
+        }
 
 
         // Start is called before the first frame update
         void Start()
         {
-            animator = GetComponent<Animator>();
-            transform.localScale = new Vector3(0, 0, 1);
         }
 
 

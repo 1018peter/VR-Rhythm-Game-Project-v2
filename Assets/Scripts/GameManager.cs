@@ -2,6 +2,8 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
+using UnityEngine.XR;
 using OVR;
 
 namespace Assets.Scripts
@@ -217,12 +219,72 @@ namespace Assets.Scripts
         }
         #endregion
 
-        #region 
+        #region Record Utility
         public void DeleteAllRecords(){
             foreach(var beatmap in SongManager.Instance.beatmapGroup.GetComponentsInChildren<Beatmap>()){
                 beatmap.ClearRecords();
             }
         }
+        #endregion
+
+        #region XR Device Utility
+
+        [Tooltip("The minimum velocity required to register as a strike.")]
+        public float controllerStrikeVelocityThreshold = 10.0f;
+        public UnityEngine.XR.InputDevice leftHandDevice;
+        public bool IsLeftHandStrikingOutwards(){
+            Vector3 controllerVelocity;
+            Vector3 vectorControllerToSource = -playerLeftController.position;
+            if(leftHandDevice.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceVelocity, out controllerVelocity)){
+                if(Vector3.Angle(vectorControllerToSource, controllerVelocity) > 90){ // Controller moving outwards.
+                    if(controllerVelocity.magnitude > controllerStrikeVelocityThreshold){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        public bool IsRightHandStrikingOutwards(){
+            Vector3 controllerVelocity;
+            Vector3 vectorControllerToSource = -playerRightController.position;
+            if(rightHandDevice.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceVelocity, out controllerVelocity)){
+                if(Vector3.Angle(vectorControllerToSource, controllerVelocity) > 90){ // Controller moving outwards.
+                    if(controllerVelocity.magnitude > controllerStrikeVelocityThreshold){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        public UnityEngine.XR.InputDevice rightHandDevice;
+        private void InitializeDeviceReferences(){
+            var leftHandDevices = new List<UnityEngine.XR.InputDevice>();
+            UnityEngine.XR.InputDevices.GetDevicesAtXRNode(UnityEngine.XR.XRNode.LeftHand, leftHandDevices);
+
+            if(leftHandDevices.Count == 1)
+            {
+                leftHandDevice = leftHandDevices[0];
+            }
+            else if(leftHandDevices.Count > 1)
+            {
+                Debug.LogError("Found more than one left hand!");
+            }
+
+            var rightHandDevices = new List<UnityEngine.XR.InputDevice>();
+            UnityEngine.XR.InputDevices.GetDevicesAtXRNode(UnityEngine.XR.XRNode.RightHand, rightHandDevices);
+
+            if(rightHandDevices.Count == 1)
+            {
+                rightHandDevice = rightHandDevices[0];
+            }
+            else if(rightHandDevices.Count > 1)
+            {
+                Debug.LogError("Found more than one right hand!");
+            }
+
+
+        }
+
         #endregion
 
         void Awake(){
@@ -243,6 +305,7 @@ namespace Assets.Scripts
             SongManager.Instance.orbitManager.orbitTransformB.rotation = 
             SongManager.Instance.orbitManager.orbitTransformG.rotation = 
             SongManager.Instance.orbitManager.orbitTransformR.rotation = Quaternion.Euler(-90, 0, 0);
+            InitializeDeviceReferences();
             GoToMainMenu();
         }
 
