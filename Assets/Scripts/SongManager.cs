@@ -125,14 +125,14 @@ namespace Assets.Scripts
             /// <summary>
             /// When to execute the command, in units of beats. Set to less than 0 to execute immediately.
             /// </summary>
-            public int timestamp;
+            public float timestamp;
 
             /// <summary>
             /// What to execute. 
             /// The action acts as a delegate for the lambda function that captures all parameters needed.
             /// </summary>
             public Action action;
-            public ScriptedCommand(int t, Action a)
+            public ScriptedCommand(float t, Action a)
             {
                 timestamp = t;
                 action = a;
@@ -156,7 +156,7 @@ namespace Assets.Scripts
 
         #region Rotation Utilities
 
-        public IEnumerator RotateOrbitForward(Transform orbit, int beats, float endAngle){
+        public IEnumerator RotateOrbitForward(Transform orbit, float beats, float endAngle){
             // Internal: Rotates around the forward axis.
             float duration = beats / bpm * 60;
             float t = 0;
@@ -171,7 +171,7 @@ namespace Assets.Scripts
             }
             orbit.rotation = endRotation;
         }
-        public IEnumerator RotateOrbitForwardOffset(Transform orbit, int beats, float offsetAngle){
+        public IEnumerator RotateOrbitForwardOffset(Transform orbit, float beats, float offsetAngle){
              // Internal: Rotates around the forward axis.
             float duration = beats / bpm * 60;
             float t = 0;
@@ -185,7 +185,7 @@ namespace Assets.Scripts
             orbit.rotation = endRotation;
         }
 
-        public IEnumerator RotateOrbitUp(Transform orbit, int beats, float endAngle){
+        public IEnumerator RotateOrbitUp(Transform orbit, float beats, float endAngle){
             // Internal: Rotates around the up axis. (The axis that goes through the flat side.)
             float duration = beats / bpm * 60;
             float t = 0;
@@ -200,7 +200,7 @@ namespace Assets.Scripts
             }
             orbit.rotation = endRotation;
         }
-        public IEnumerator RotateOrbitUpOffset(Transform orbit, int beats, float offsetAngle){
+        public IEnumerator RotateOrbitUpOffset(Transform orbit, float beats, float offsetAngle){
             // Internal: Rotates around the up axis. (The axis that goes through the flat side.)
             float duration = beats / bpm * 60;
             float t = 0;
@@ -214,7 +214,7 @@ namespace Assets.Scripts
             orbit.rotation = endRotation;
         }
 
-        public IEnumerator RotateOrbitRight(Transform orbit, int beats, float endAngle){
+        public IEnumerator RotateOrbitRight(Transform orbit, float beats, float endAngle){
             // Internal: Rotates around the right axis.
             float duration = beats / bpm * 60;
             float t = 0;
@@ -229,7 +229,7 @@ namespace Assets.Scripts
             }
             orbit.rotation = endRotation;
         }
-        public IEnumerator RotateOrbitRightOffset(Transform orbit, int beats, float offsetAngle){
+        public IEnumerator RotateOrbitRightOffset(Transform orbit, float beats, float offsetAngle){
             // Internal: Rotates around the right axis.
             float duration = beats / bpm * 60;
             float t = 0;
@@ -328,65 +328,77 @@ namespace Assets.Scripts
                         Assert.IsTrue(parameterCount == 1, $"Line {lineCount}: FIRST_BEAT_OFFSET expects exactly one parameter (seconds until the first beat of the song). {parameterCount} was found.");
                         offsetFromFirstBeat = Convert.ToSingle(tokens[1]);
                         break;
+                    case "INITIAL_ROTATION_R":
+                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: INITIAL_POSITION_R expects exactly three parameters (X-rotation, Y-rotation, Z-rotation). {parameterCount} was found.");
+                        orbitManager.initialRotationR = Quaternion.Euler(Convert.ToSingle(tokens[1]), Convert.ToSingle(tokens[2]), Convert.ToSingle(tokens[3]));
+                        break;
+                    case "INITIAL_ROTATION_G":
+                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: INITIAL_POSITION_G expects exactly three parameters (X-rotation, Y-rotation, Z-rotation). {parameterCount} was found.");
+                        orbitManager.initialRotationG = Quaternion.Euler(Convert.ToSingle(tokens[1]), Convert.ToSingle(tokens[2]), Convert.ToSingle(tokens[3]));                        
+                        break;
+                    case "INITIAL_ROTATION_B":
+                        Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: INITIAL_POSITION_B expects exactly three parameters (X-rotation, Y-rotation, Z-rotation). {parameterCount} was found.");
+                        orbitManager.initialRotationB = Quaternion.Euler(Convert.ToSingle(tokens[1]), Convert.ToSingle(tokens[2]), Convert.ToSingle(tokens[3]));
+                        break;
                     case "ROTATE_FORWARD_TO":
                         Assert.IsTrue(parameterCount == 4, $"Line {lineCount}: ROTATE_FORWARD_TO expects exactly 4 parameters (timestamp, orbit color(R/G/B), rotation duration in beats, resulting rotation in degrees). {parameterCount} was found.");
                         targetOrbit = decodeOrbitColor(tokens[2]);
                         Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
-                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateOrbitForward(targetOrbit, Convert.ToInt32(tokens[3]), Convert.ToSingle(tokens[4]))); }));
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToSingle(tokens[1]), () => { StartCoroutine(RotateOrbitForward(targetOrbit, Convert.ToSingle(tokens[3]), Convert.ToSingle(tokens[4]))); }));
 
                         break;
                     case "ROTATE_FORWARD_BY":
                         Assert.IsTrue(parameterCount == 4, $"Line {lineCount}: ROTATE_FORWARD_BY expects exactly 4 parameters (timestamp, orbit color(R/G/B), rotation duration in beats, offset rotation in degrees). {parameterCount} was found.");
                         targetOrbit = decodeOrbitColor(tokens[2]);
                         Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
-                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateOrbitForwardOffset(targetOrbit, Convert.ToInt32(tokens[3]), Convert.ToSingle(tokens[4]))); }));
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToSingle(tokens[1]), () => { StartCoroutine(RotateOrbitForwardOffset(targetOrbit, Convert.ToSingle(tokens[3]), Convert.ToSingle(tokens[4]))); }));
 
                         break;
                     case "ROTATE_UP_TO":
                         Assert.IsTrue(parameterCount == 4, $"Line {lineCount}: ROTATE_UP_TO expects exactly 4 parameters (timestamp, orbit color(R/G/B), rotation duration in beats, resulting rotation in degrees). {parameterCount} was found.");
                         targetOrbit = decodeOrbitColor(tokens[2]);
                         Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
-                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateOrbitUp(targetOrbit, Convert.ToInt32(tokens[3]), Convert.ToSingle(tokens[4]))); }));
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToSingle(tokens[1]), () => { StartCoroutine(RotateOrbitUp(targetOrbit, Convert.ToSingle(tokens[3]), Convert.ToSingle(tokens[4]))); }));
 
                         break;
                     case "ROTATE_UP_BY":
                         Assert.IsTrue(parameterCount == 4, $"Line {lineCount}: ROTATE_UP_BY expects exactly 4 parameters (timestamp, orbit color(R/G/B), rotation duration in beats, offset rotation in degrees). {parameterCount} was found.");
                         targetOrbit = decodeOrbitColor(tokens[2]);
                         Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
-                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateOrbitUpOffset(targetOrbit, Convert.ToInt32(tokens[3]), Convert.ToSingle(tokens[4]))); }));
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToSingle(tokens[1]), () => { StartCoroutine(RotateOrbitUpOffset(targetOrbit, Convert.ToSingle(tokens[3]), Convert.ToSingle(tokens[4]))); }));
 
                         break;
                     case "ROTATE_RIGHT_TO":
                         Assert.IsTrue(parameterCount == 4, $"Line {lineCount}: ROTATE_UP_TO expects exactly 4 parameters (timestamp, orbit color(R/G/B), rotation duration in beats, resulting rotation in degrees). {parameterCount} was found.");
                         targetOrbit = decodeOrbitColor(tokens[2]);
                         Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
-                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateOrbitRight(targetOrbit, Convert.ToInt32(tokens[3]), Convert.ToSingle(tokens[4]))); }));
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToSingle(tokens[1]), () => { StartCoroutine(RotateOrbitRight(targetOrbit, Convert.ToSingle(tokens[3]), Convert.ToSingle(tokens[4]))); }));
 
                         break;
                     case "ROTATE_RIGHT_BY":
                         Assert.IsTrue(parameterCount == 4, $"Line {lineCount}: ROTATE_UP_BY expects exactly 4 parameters (timestamp, orbit color(R/G/B), rotation duration in beats, offset rotation in degrees). {parameterCount} was found.");
                         targetOrbit = decodeOrbitColor(tokens[2]);
                         Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
-                        immediateCommands.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { StartCoroutine(RotateOrbitRightOffset(targetOrbit, Convert.ToInt32(tokens[3]), Convert.ToSingle(tokens[4]))); }));
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToSingle(tokens[1]), () => { StartCoroutine(RotateOrbitRightOffset(targetOrbit, Convert.ToSingle(tokens[3]), Convert.ToSingle(tokens[4]))); }));
 
                         break;
                     case "ORBITNOTE_FIXED":
                         Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: ORBITNOTE_FIXED expects exactly 3 parameters (timestamp, orbit color(R/G/B), position on orbit in degrees). {parameterCount} was found.");
                         targetOrbit = decodeOrbitColor(tokens[2]);
                         Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
-                        notes.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { SpawnOrbitNodeInPlace(targetOrbit, Convert.ToSingle(tokens[3])); }));
+                        notes.Add(new ScriptedCommand(Convert.ToSingle(tokens[1]), () => { SpawnOrbitNodeInPlace(targetOrbit, Convert.ToSingle(tokens[3])); }));
 
                         break;
                     case "ORBITNOTE_MOVING":
                         Assert.IsTrue(parameterCount == 4, $"Line {lineCount}: ORBITNOTE_MOVING expects exactly 4 parameters (timestamp, orbit color(R/G/B), start position on orbit in degrees, end position on orbit in degrees). {parameterCount} was found.");
                         targetOrbit = decodeOrbitColor(tokens[2]);
                         Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
-                        notes.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { SpawnOrbitNodeMoving(targetOrbit, Convert.ToSingle(tokens[3]), Convert.ToSingle(tokens[4])); }));
+                        notes.Add(new ScriptedCommand(Convert.ToSingle(tokens[1]), () => { SpawnOrbitNodeMoving(targetOrbit, Convert.ToSingle(tokens[3]), Convert.ToSingle(tokens[4])); }));
 
                         break;
                     case "TAPNOTE":
                         Assert.IsTrue(parameterCount == 3, $"Line {lineCount}: TAPNOTE expects exactly 3 parameters (timestamp, X-rotation relative to origin, Z-position relative to origin). {parameterCount} was found.");
-                        notes.Add(new ScriptedCommand(Convert.ToInt32(tokens[1]), () => { SpawnTapNote(Convert.ToSingle(tokens[2]), Convert.ToSingle(tokens[3])); }));
+                        notes.Add(new ScriptedCommand(Convert.ToSingle(tokens[1]), () => { SpawnTapNote(Convert.ToSingle(tokens[2]), Convert.ToSingle(tokens[3])); }));
                         break;
                     default:
                         Debug.LogError($"Line {lineCount}: Unknown command '{tokens[0]}'.");
