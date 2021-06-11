@@ -53,7 +53,7 @@ namespace Assets.Scripts{
 
         private void OnTriggerEnter(Collider other) {
             if(!activated) return;
-
+            GameManager.Instance.debugDisplay.text = "UI Selected";
             Debug.Log("UI Selected");
             onSelect.Invoke();
             if(other.gameObject.name.StartsWith("Left")){
@@ -67,6 +67,7 @@ namespace Assets.Scripts{
 
         private void OnTriggerExit(Collider other) {
             
+            GameManager.Instance.debugDisplay.text = "UI Un-triggered";
             Debug.Log("UI Un-triggered");
             onDeselect.Invoke();
             if(other.gameObject.name.StartsWith("Left")){

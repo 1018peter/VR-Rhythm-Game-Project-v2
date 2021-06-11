@@ -32,7 +32,7 @@ namespace Assets.Scripts{
         void Start()
         {
             widgets = GetComponentsInChildren<UIWidget>().Where((UIWidget widget) => widget != this).ToArray<UIWidget>();
-            OnDeactivate();
+            // OnDeactivate();
         }
 
 

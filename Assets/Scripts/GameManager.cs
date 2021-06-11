@@ -62,6 +62,8 @@ namespace Assets.Scripts
         [Tooltip("The maximum distance the player can reach with their hands, relative to the player gameObject. (A rough estimate)")]
         public float playerMaxReach = 1.0f;
 
+        public TMPro.TextMeshPro debugDisplay;
+
         #region Menu Controls
 
         public float gripRotateAngularSpeed = 10;
@@ -240,7 +242,19 @@ namespace Assets.Scripts
                     if(controllerVelocity.magnitude > controllerStrikeVelocityThreshold){
                         return true;
                     }
+                    else{
+                        debugDisplay.text = "Left controller not moving fast enough: " + controllerVelocity.magnitude;
+                        Debug.Log("Left controller not moving fast enough: " + controllerVelocity.magnitude);
+                    }
                 }
+                else{
+                    debugDisplay.text = "Left controller moving inwards";
+                    Debug.Log("Left controller moving inwards");
+                }
+            }
+            else{
+                debugDisplay.text = "Failed to get left hand device velocity";
+                Debug.Log("Failed to get left hand device velocity");
             }
             return false;
         }
@@ -252,7 +266,19 @@ namespace Assets.Scripts
                     if(controllerVelocity.magnitude > controllerStrikeVelocityThreshold){
                         return true;
                     }
+                    else{
+                        debugDisplay.text = "Right controller not moving fast enough: " + controllerVelocity.magnitude;
+                        Debug.Log("Right controller not moving fast enough: " + controllerVelocity.magnitude);
+                    }
                 }
+                else{
+                    debugDisplay.text = "Right controller moving inwards";
+                    Debug.Log("Right controller moving inwards");
+                }
+            }
+            else{
+                debugDisplay.text = "Failed to get right hand device velocity";
+                Debug.Log("Failed to get right hand device velocity");
             }
             return false;
         }
@@ -267,7 +293,12 @@ namespace Assets.Scripts
             }
             else if(leftHandDevices.Count > 1)
             {
+                debugDisplay.text = "Found more than one left hand!";
                 Debug.LogError("Found more than one left hand!");
+            }
+            else{
+                debugDisplay.text = "No left hand found";
+                Debug.LogError("No left hand found");
             }
 
             var rightHandDevices = new List<UnityEngine.XR.InputDevice>();
@@ -279,7 +310,12 @@ namespace Assets.Scripts
             }
             else if(rightHandDevices.Count > 1)
             {
+                debugDisplay.text += "Found more than one right hand!";
                 Debug.LogError("Found more than one right hand!");
+            }
+            else{
+                debugDisplay.text += "No right hand found";
+                Debug.LogError("No right hand found");
             }
 
 
