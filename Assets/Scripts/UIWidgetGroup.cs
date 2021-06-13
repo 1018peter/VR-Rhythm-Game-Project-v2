@@ -14,15 +14,15 @@ namespace Assets.Scripts{
 
         private List<UIWidget> widgets;
         public override void OnActivate(){
-            widgets.ForEach(widget => {
+            foreach(var widget in widgets){
                 widget.Activate();
-            });
+            }
         }
 
         public override void OnDeactivate(){
-            widgets.ForEach(widget => {
+            foreach(var widget in widgets){
                 widget.Deactivate();
-            });
+            }
             
         }
 
@@ -32,6 +32,9 @@ namespace Assets.Scripts{
         void Start()
         {
             widgets = GetComponentsInChildren<UIWidget>().Where((UIWidget widget) => widget != this).ToList<UIWidget>();
+            foreach(var widget in widgets){
+                widget.OnDeactivate();
+            }
             // OnDeactivate();
         }
 

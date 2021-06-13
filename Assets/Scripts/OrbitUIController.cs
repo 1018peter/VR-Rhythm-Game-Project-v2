@@ -53,16 +53,20 @@ namespace Assets.Scripts{
 
         private void OnTriggerEnter(Collider other) {
             if(!activated) return;
-            GameManager.Instance.debugDisplay.text = "UI Selected";
-            Debug.Log("UI Selected");
-            onSelect.Invoke();
-            if(other.gameObject.name.StartsWith("Left")){
+            if(other.gameObject.name.StartsWith("Left") && leftSelected != this){
+                GameManager.Instance.debugDisplay.text = "UI Selected";
+                Debug.Log("UI Selected");
+                onSelect.Invoke();
                 leftSelected = this;
+                widget.Activate();
             }
-            else{
+            else if(other.gameObject.name.StartsWith("Right") && rightSelected != this){
+                GameManager.Instance.debugDisplay.text = "UI Selected";
+                Debug.Log("UI Selected");
+                onSelect.Invoke();
                 rightSelected = this;
+                widget.Activate();
             }
-            widget.Activate();
         }
 
         private void OnTriggerExit(Collider other) {

@@ -378,9 +378,6 @@ namespace Assets.Scripts
                 
             }
 
-            Quaternion rotation;
-            if(centerEyeDevice.TryGetFeatureValue(UnityEngine.XR.CommonUsages.centerEyeRotation, out rotation))
-                debugDisplay.text = "centerEyeRotation: " + rotation.eulerAngles.ToString();
 
         }
     }
