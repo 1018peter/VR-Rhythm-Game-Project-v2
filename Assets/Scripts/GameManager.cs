@@ -105,10 +105,12 @@ namespace Assets.Scripts
         #region Menu State Transition Functions
 
         public void LeftConfirm(){
+            debugDisplay.text = "Left Confirm";
             OrbitUIController.LeftConfirm();
         }
 
         public void RightConfirm(){
+            debugDisplay.text = "Right Confirm";
             OrbitUIController.RightConfirm();
         }
 
