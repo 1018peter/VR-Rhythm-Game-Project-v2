@@ -10,11 +10,11 @@ namespace Assets.Scripts{
         private Animator animator;
 
         public override void OnActivate(){
-            animator.Play("Panel Appear", 0);
+            animator.Play("Panel Appear");
         }
 
         public override void OnDeactivate(){
-            animator.Play("Panel Disappear", 0);
+            animator.Play("Panel Disappear");
         }
 
         private void Awake() {

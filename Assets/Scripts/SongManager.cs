@@ -223,7 +223,7 @@ namespace Assets.Scripts
             Quaternion startRotation = orbit.rotation;
             Quaternion endRotation = Quaternion.Euler(endAngle, orbit.rotation.eulerAngles.y, orbit.rotation.eulerAngles.z);
             while(t < 1){
-                orbit.rotation = Quaternion.Euler(Mathf.Lerp(startRotation.eulerAngles.z, endAngle, t), startRotation.eulerAngles.y,  startRotation.eulerAngles.z);
+                orbit.rotation = Quaternion.Euler(Mathf.Lerp(startRotation.eulerAngles.x, endAngle, t), startRotation.eulerAngles.y,  startRotation.eulerAngles.z);
                 yield return new WaitForEndOfFrame();
                 t = (songPosInBeats - startBeat) / beats;
             }
@@ -235,10 +235,14 @@ namespace Assets.Scripts
             float startBeat = songPosInBeats;
             float startAngle = orbit.rotation.eulerAngles.x;
             float endAngle = startAngle + offsetAngle;
+            Debug.Log("startAngle: " + startAngle);
+            Debug.Log("endAngle: " +endAngle);
             Quaternion startRotation = orbit.rotation;
             Quaternion endRotation = Quaternion.Euler(endAngle, orbit.rotation.eulerAngles.y, orbit.rotation.eulerAngles.z);
+            // Quaternion endRotation = Quaternion.AngleAxis(offsetAngle, Vector3.right);
             while(t < 1){
-                orbit.rotation = Quaternion.Euler(Mathf.Lerp(startRotation.eulerAngles.z, endAngle, t), startRotation.eulerAngles.y,  startRotation.eulerAngles.z);
+                orbit.rotation = Quaternion.Euler(Mathf.Lerp(startRotation.eulerAngles.x, endAngle, t), startRotation.eulerAngles.y,  startRotation.eulerAngles.z);
+                // orbit.rotation = Quaternion.Slerp(startRotation, endRotation, t);
                 yield return new WaitForEndOfFrame();
                 t = (songPosInBeats - startBeat) / beats;
             }
