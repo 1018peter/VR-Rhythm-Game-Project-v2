@@ -20,10 +20,10 @@ namespace Assets.Scripts{
         public abstract void OnActivate();
         public void Deactivate(){
             activation--;
+            if(activation < 0) activation = 0;
             if(!isActivated) {
                 SongManager.Instance.playUIdeactivate();
                 OnDeactivate();
-
             }
         }
 

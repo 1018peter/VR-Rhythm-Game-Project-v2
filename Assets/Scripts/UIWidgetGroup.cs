@@ -12,17 +12,17 @@ namespace Assets.Scripts{
     public class UIWidgetGroup : UIWidget
     {
 
-        private UIWidget[] widgets;
+        private List<UIWidget> widgets;
         public override void OnActivate(){
-            foreach(var widget in widgets){
+            widgets.ForEach(widget => {
                 widget.Activate();
-            }
+            });
         }
 
         public override void OnDeactivate(){
-            foreach(var widget in widgets){
+            widgets.ForEach(widget => {
                 widget.Deactivate();
-            }
+            });
             
         }
 
@@ -31,7 +31,7 @@ namespace Assets.Scripts{
         // Start is called before the first frame update
         void Start()
         {
-            widgets = GetComponentsInChildren<UIWidget>().Where((UIWidget widget) => widget != this).ToArray<UIWidget>();
+            widgets = GetComponentsInChildren<UIWidget>().Where((UIWidget widget) => widget != this).ToList<UIWidget>();
             // OnDeactivate();
         }
 

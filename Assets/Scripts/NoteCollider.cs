@@ -25,11 +25,12 @@ namespace Assets.Scripts{
         private void OnTriggerEnter(Collider other) {
             if(other.CompareTag("Player")){
                 if(other.name.StartsWith("Left") && GameManager.Instance.IsLeftHandStrikingOutwards()){
-                    
+                    GameManager.Instance.leftHandDevice.SendHapticImpulse(0, 0.4f, 0.1f);
                     this.enabled = false;
                     attachedNote.HitCheck();
                 }
                 else if(other.name.StartsWith("Right") && GameManager.Instance.IsRightHandStrikingOutwards()){
+                    GameManager.Instance.rightHandDevice.SendHapticImpulse(0, 0.4f, 0.1f);
                     this.enabled = false;
                     attachedNote.HitCheck();
 

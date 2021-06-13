@@ -283,6 +283,7 @@ namespace Assets.Scripts
             return false;
         }
         public UnityEngine.XR.InputDevice rightHandDevice;
+        public UnityEngine.XR.InputDevice centerEyeDevice;
         private void InitializeDeviceReferences(){
             var leftHandDevices = new List<UnityEngine.XR.InputDevice>();
             UnityEngine.XR.InputDevices.GetDevicesAtXRNode(UnityEngine.XR.XRNode.LeftHand, leftHandDevices);
@@ -316,6 +317,24 @@ namespace Assets.Scripts
             else{
                 debugDisplay.text += "No right hand found";
                 Debug.LogError("No right hand found");
+            }
+
+            var centerEyeDevices = new List<UnityEngine.XR.InputDevice>();
+            UnityEngine.XR.InputDevices.GetDevicesAtXRNode(UnityEngine.XR.XRNode.CenterEye, centerEyeDevices);
+
+            
+            if(centerEyeDevices.Count == 1)
+            {
+                centerEyeDevice = centerEyeDevices[0];
+            }
+            else if(rightHandDevices.Count > 1)
+            {
+                debugDisplay.text += "Found more than one center eye!";
+                Debug.LogError("Found more than one center eye!");
+            }
+            else{
+                debugDisplay.text += "No center eye found";
+                Debug.LogError("No center eye found");
             }
 
 
@@ -358,6 +377,10 @@ namespace Assets.Scripts
                 currentMenu.transform.localRotation = Quaternion.Euler(0, gripRotateStart.eulerAngles.y + theta, 0);
                 
             }
+
+            Quaternion rotation;
+            if(centerEyeDevice.TryGetFeatureValue(UnityEngine.XR.CommonUsages.centerEyeRotation, out rotation))
+                debugDisplay.text = "centerEyeRotation: " + rotation.eulerAngles.ToString();
 
         }
     }
