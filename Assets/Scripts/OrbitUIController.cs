@@ -80,13 +80,15 @@ namespace Assets.Scripts{
             GameManager.Instance.debugDisplay.text = "UI Un-triggered";
             Debug.Log("UI Un-triggered");
             onDeselect.Invoke();
-            if(other.gameObject.name.StartsWith("Left") && leftSelected != null){
+            if(other.gameObject.name.StartsWith("Left")){
                 widget.Deactivate();
-                leftSelected = null;
+                if(leftSelected == this)
+                    leftSelected = null;
             }
-            else if(other.gameObject.name.StartsWith("Right") && rightSelected != null){
+            else if(other.gameObject.name.StartsWith("Right")){
                 widget.Deactivate();
-                rightSelected = null;
+                if(rightSelected == this)
+                    rightSelected = null;
             }
 
         }

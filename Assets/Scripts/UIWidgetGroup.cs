@@ -32,9 +32,9 @@ namespace Assets.Scripts{
         void Start()
         {
             widgets = GetComponentsInChildren<UIWidget>().Where((UIWidget widget) => widget != this).ToList<UIWidget>();
-            foreach(var widget in widgets){
-                widget.OnDeactivate();
-            }
+            // foreach(var widget in widgets){
+            //     widget.OnDeactivate();
+            // }
             // OnDeactivate();
         }
 

@@ -10,10 +10,12 @@ namespace Assets.Scripts{
         private Animator animator;
 
         public override void OnActivate(){
+            animator.StopPlayback();
             animator.Play("Panel Appear");
         }
 
         public override void OnDeactivate(){
+            animator.StopPlayback();
             animator.Play("Panel Disappear");
         }
 
