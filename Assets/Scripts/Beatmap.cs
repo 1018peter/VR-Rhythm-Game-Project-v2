@@ -43,7 +43,13 @@ namespace Assets.Scripts
 
         private string dataPath{
             get{
+                #if UNITY_EDITOR
                 return $@"Assets/GameData/BeatmapRecords/{gameObject.name}.txt";
+                #else
+                return Application.persistentDataPath + $@"/GameData/BeatmapRecords/{gameObject.name}.txt";
+                #endif
+
+                
             }
         }
 
