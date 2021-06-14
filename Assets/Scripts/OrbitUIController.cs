@@ -62,14 +62,22 @@ namespace Assets.Scripts{
             if(other.gameObject.name.StartsWith("Left") && leftSelected != this){
                 GameManager.Instance.debugDisplay.text = "UI Selected";
                 Debug.Log("UI Selected");
+                try{
                 onSelect.Invoke();
+                } catch(UnityException e){
+                    GameManager.Instance.debugDisplay.text = e.ToString() + ". StackTrace: " + e.StackTrace;
+                }
                 leftSelected = this;
                 widget.Activate();
             }
             else if(other.gameObject.name.StartsWith("Right") && rightSelected != this){
                 GameManager.Instance.debugDisplay.text = "UI Selected";
                 Debug.Log("UI Selected");
+                try{
                 onSelect.Invoke();
+                } catch(UnityException e){
+                    GameManager.Instance.debugDisplay.text = e.ToString() + ". StackTrace: " + e.StackTrace;
+                }
                 rightSelected = this;
                 widget.Activate();
             }
