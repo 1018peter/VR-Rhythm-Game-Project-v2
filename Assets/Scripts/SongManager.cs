@@ -176,9 +176,9 @@ namespace Assets.Scripts
             float startAngle = orbit.rotation.eulerAngles.z;
             float endAngle = startAngle + offsetAngle;
             Quaternion startRotation = orbit.rotation;
-            Quaternion endRotation = Quaternion.Euler(orbit.rotation.eulerAngles.x, orbit.rotation.eulerAngles.y, endAngle);
+            Quaternion endRotation = startRotation * Quaternion.Euler(0, 0, offsetAngle);
             while(t < 1){
-                orbit.rotation = Quaternion.Euler(startRotation.eulerAngles.x, startRotation.eulerAngles.y, Mathf.Lerp(startRotation.eulerAngles.z, endAngle, t));
+                orbit.rotation = startRotation * Quaternion.Euler(0, 0, Mathf.Lerp(0, offsetAngle, t));
                 yield return new WaitForEndOfFrame();
                 t = (songPosInBeats - startBeat) / beats;
             }
@@ -206,9 +206,9 @@ namespace Assets.Scripts
             float startAngle = orbit.rotation.eulerAngles.y;
             float endAngle = startAngle + offsetAngle;
             Quaternion startRotation = orbit.rotation;
-            Quaternion endRotation = Quaternion.Euler(orbit.rotation.eulerAngles.x, endAngle, orbit.rotation.eulerAngles.z);
+            Quaternion endRotation = startRotation * Quaternion.Euler(0, offsetAngle, 0);
             while(t < 1){
-                orbit.rotation = Quaternion.Euler(startRotation.eulerAngles.x, Mathf.Lerp(startRotation.eulerAngles.y, endAngle, t), startRotation.eulerAngles.z);
+                orbit.rotation = startRotation * Quaternion.Euler(0, Mathf.Lerp(0, offsetAngle, t), 0);
                 yield return new WaitForEndOfFrame();
                 t = (songPosInBeats - startBeat) / beats;
             }
@@ -238,11 +238,9 @@ namespace Assets.Scripts
             Debug.Log("startAngle: " + startAngle);
             Debug.Log("endAngle: " +endAngle);
             Quaternion startRotation = orbit.rotation;
-            Quaternion endRotation = Quaternion.Euler(endAngle, orbit.rotation.eulerAngles.y, orbit.rotation.eulerAngles.z);
-            // Quaternion endRotation = Quaternion.AngleAxis(offsetAngle, Vector3.right);
+            Quaternion endRotation = startRotation * Quaternion.Euler(offsetAngle, 0, 0);
             while(t < 1){
-                orbit.rotation = Quaternion.Euler(Mathf.Lerp(startRotation.eulerAngles.x, endAngle, t), startRotation.eulerAngles.y,  startRotation.eulerAngles.z);
-                // orbit.rotation = Quaternion.Slerp(startRotation, endRotation, t);
+                orbit.rotation = startRotation * Quaternion.Euler(Mathf.Lerp(0, offsetAngle, t), 0, 0);
                 yield return new WaitForEndOfFrame();
                 t = (songPosInBeats - startBeat) / beats;
             }
@@ -259,21 +257,21 @@ namespace Assets.Scripts
             newNote.transform.localScale = Vector3.one;
             newNote.transform.localRotation = Quaternion.Euler(0, 0, orbitAngle);
         }
-        IEnumerator MoveOrbitNode(GameObject note, float endAngle){
+        IEnumerator MoveOrbitNode(GameObject note, float startAngle, float endAngle){
             float beatPos = songPosInBeats;
-            float startAngle = note.transform.localRotation.z;
+            Quaternion endRotation = Quaternion.Euler(0, 0, endAngle);
             for(float t = (songPosInBeats - beatPos) / beatsShownInAdvance; t < 1; t = (songPosInBeats - beatPos) / beatsShownInAdvance){
                 note.transform.localRotation = Quaternion.Euler(0, 0, Mathf.LerpAngle(startAngle, endAngle, t));
                 yield return new WaitForEndOfFrame();
                 if(note == null) break;
             }
+            note.transform.localRotation = endRotation;
         }
         public void SpawnOrbitNodeMoving(Transform anchor, float orbitAngleStart, float orbitAngleEnd){
             var newNote = Instantiate(orbitNote);
             newNote.transform.SetParent(anchor, true);
             newNote.transform.localScale = Vector3.one;
-            newNote.transform.localRotation = Quaternion.Euler(0, 0, orbitAngleStart);
-            StartCoroutine(MoveOrbitNode(newNote, orbitAngleEnd));
+            StartCoroutine(MoveOrbitNode(newNote, orbitAngleStart, orbitAngleEnd));
         }
         public void SpawnTapNote(float rotationY, float rotationZ){
             // For simplicity, only two rotations can be specified.

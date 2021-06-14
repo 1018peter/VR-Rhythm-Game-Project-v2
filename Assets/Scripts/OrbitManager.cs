@@ -63,6 +63,24 @@ public class OrbitManager : MonoBehaviour
 
     }
 
+    public IEnumerator RotateAllTo(float timeInSeconds, Quaternion rotationR, Quaternion rotationG, Quaternion rotationB){
+        float t = 0;
+        Quaternion startRotationR = orbitTransformR.localRotation;
+        Quaternion startRotationG = orbitTransformG.localRotation;
+        Quaternion startRotationB = orbitTransformB.localRotation;
+        while(t < timeInSeconds){
+            orbitTransformR.localRotation = Quaternion.Lerp(startRotationR, rotationR, t);
+            orbitTransformG.localRotation = Quaternion.Lerp(startRotationG, rotationG, t);
+            orbitTransformB.localRotation = Quaternion.Lerp(startRotationB, rotationB, t);
+            yield return new WaitForEndOfFrame();
+            t += Time.deltaTime;
+        }
+        orbitTransformR.localRotation = rotationR;
+        orbitTransformG.localRotation = rotationG;
+        orbitTransformB.localRotation = rotationB;
+
+    }
+
     // Start is called before the first frame update
     void Start()
     {

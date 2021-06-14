@@ -29,6 +29,9 @@ namespace Assets.Scripts{
                     rightSelected = null;
                 }
             }
+            else{
+                GameManager.Instance.debugDisplay.text = "Right Confirm rejected: Nothing selected.";
+            }
         }
 
         public static void LeftConfirm(){
@@ -40,6 +43,9 @@ namespace Assets.Scripts{
                     leftSelected = null;
                     rightSelected = null;
                 }
+            }
+            else{
+                GameManager.Instance.debugDisplay.text = "Left Confirm rejected: Nothing selected.";
             }
         }
 
@@ -74,11 +80,11 @@ namespace Assets.Scripts{
             GameManager.Instance.debugDisplay.text = "UI Un-triggered";
             Debug.Log("UI Un-triggered");
             onDeselect.Invoke();
-            if(other.gameObject.name.StartsWith("Left")){
+            if(other.gameObject.name.StartsWith("Left") && leftSelected != null){
                 widget.Deactivate();
                 leftSelected = null;
             }
-            else{
+            else if(other.gameObject.name.StartsWith("Right") && rightSelected != null){
                 widget.Deactivate();
                 rightSelected = null;
             }
