@@ -41,15 +41,9 @@ namespace Assets.Scripts
 
         public SortedSet<BeatmapRecord> localRecords = new SortedSet<BeatmapRecord>();
 
-        private string dataPath{
+        private string dataKey{
             get{
-                #if UNITY_EDITOR
-                return $@"Assets/GameData/BeatmapRecords/{gameObject.name}.txt";
-                #else
-                return Application.persistentDataPath + $@"/GameData/BeatmapRecords/{gameObject.name}.txt";
-                #endif
-
-                
+                return $@"GameData/BeatmapRecords/{gameObject.name}";
             }
         }
 
@@ -60,37 +54,30 @@ namespace Assets.Scripts
 
         public void LoadRecords(){
             localRecords.Clear();
-            if(!File.Exists(dataPath)){
-               using(StreamWriter sw = File.CreateText(dataPath)){
-                   sw.WriteLine("0 0 0 0 0 0");
-               } 
-            }
-
-            using(StreamReader sr = File.OpenText(dataPath)){
-                string line;
-                while((line = sr.ReadLine()) != null){
-                    string[] tokens = line.Split(' ');
-                    if(tokens.Length != 6){
-                        throw new Exception("Record data format error at " + dataPath);
-                    }
-                    localRecords.Add(new BeatmapRecord(
-                        Convert.ToInt32(tokens[0]), 
-                        Convert.ToInt32(tokens[1]), 
-                        Convert.ToInt32(tokens[2]), 
-                        Convert.ToInt32(tokens[3]), 
-                        Convert.ToInt32(tokens[4]), 
-                        Convert.ToInt32(tokens[5])));
+            string records = PlayerPrefs.GetString(dataKey, "0 0 0 0 0 0");
+            string[] lines = records.Split('\n');
+            foreach(var line in lines){
+                string[] tokens = line.Split(' ');
+                if(tokens.Length != 6){
+                    throw new Exception("Record data format error at " + dataKey);
                 }
+                localRecords.Add(new BeatmapRecord(
+                    Convert.ToInt32(tokens[0]), 
+                    Convert.ToInt32(tokens[1]), 
+                    Convert.ToInt32(tokens[2]), 
+                    Convert.ToInt32(tokens[3]), 
+                    Convert.ToInt32(tokens[4]), 
+                    Convert.ToInt32(tokens[5])));
+
             }
         }
 
         public void SaveRecords(){
-            if(File.Exists(dataPath)) File.Delete(dataPath);
-            using(StreamWriter sw = File.CreateText(dataPath)){
-                foreach(var record in localRecords){
-                    sw.WriteLine($@"{record.missCount} {record.badCount} {record.goodCount} {record.perfectCount} {record.maxCombo} {record.score}");
-                }
+            StringBuilder sb = new StringBuilder();
+            foreach(var record in localRecords){
+                sb.Append($"{record.missCount} {record.badCount} {record.goodCount} {record.perfectCount} {record.maxCombo} {record.score}\n");
             }
+            PlayerPrefs.SetString(dataKey, sb.ToString());
         }
 
         public void ClearRecords(){
