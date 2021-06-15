@@ -247,6 +247,39 @@ namespace Assets.Scripts
             orbit.rotation = endRotation;
         }
 
+        
+        public IEnumerator RotateAllTo(float beats, Quaternion rotationR, Quaternion rotationG, Quaternion rotationB){
+            float t = 0;
+            float startBeat = songPosInBeats;
+            Quaternion startRotationR = orbitManager.orbitTransformR.localRotation;
+            Quaternion startRotationG = orbitManager.orbitTransformG.localRotation;
+            Quaternion startRotationB = orbitManager.orbitTransformB.localRotation;
+            while(t < beats){
+                orbitManager.orbitTransformR.localRotation = Quaternion.Lerp(startRotationR, rotationR, t);
+                orbitManager.orbitTransformG.localRotation = Quaternion.Lerp(startRotationG, rotationG, t);
+                orbitManager.orbitTransformB.localRotation = Quaternion.Lerp(startRotationB, rotationB, t);
+                yield return new WaitForEndOfFrame();
+                t = (songPosInBeats - startBeat) / beats;
+            }
+            orbitManager.orbitTransformR.localRotation = rotationR;
+            orbitManager.orbitTransformG.localRotation = rotationG;
+            orbitManager.orbitTransformB.localRotation = rotationB;
+
+        }
+
+        public IEnumerator RotateOrbitTo( Transform orbit, float beats, Quaternion rotation){
+            float t = 0;
+            float startBeat = songPosInBeats;
+            Quaternion startRotation = orbit.localRotation;
+            while(t < beats){
+                orbit.localRotation = Quaternion.Lerp(startRotation, rotation, t);
+                yield return new WaitForEndOfFrame();
+                t = (songPosInBeats - startBeat) / beats;
+            }
+            orbit.localRotation = rotation;
+
+        }
+
         public void SpawnOrbitNodeInPlace(Transform anchor, float orbitAngle){
             //  The note is first rotated to the same rotation as the anchor orbit.
             // Then, the note is assigned to be parent to the anchor orbit.
@@ -316,7 +349,7 @@ namespace Assets.Scripts
                     lineCount++;
                     continue; // Skip comments.
                 }
-                string[] tokens = line.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] tokens = line.Split(new char[] { ' ', ',', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
                 if (tokens.Length == 0) continue; // Skip empty lines.
                 string funcCode = tokens[0];
                 int parameterCount = tokens.Length - 1;
@@ -385,6 +418,13 @@ namespace Assets.Scripts
                         targetOrbit = decodeColorToOrbit(tokens[2]);
                         Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
                         immediateCommands.Add(new ScriptedCommand(Convert.ToSingle(tokens[1]), () => { StartCoroutine(RotateOrbitRightOffset(targetOrbit, Convert.ToSingle(tokens[3]), Convert.ToSingle(tokens[4]))); }));
+
+                        break;
+                    case "ROTATE_TO":
+                        Assert.IsTrue(parameterCount == 6, $"Line {lineCount}: ROTATE_TO expects exactly 6 parameters (timestamp, orbit color(R/G/B), rotation duration in beats, X-rotation, Y-rotation, and Z-rotation). {parameterCount} was found.");
+                        targetOrbit = decodeColorToOrbit(tokens[2]);
+                        Assert.IsNotNull(targetOrbit, $"Line {lineCount}: Invalid orbit color code. Must be R, G, or B.");
+                        immediateCommands.Add(new ScriptedCommand(Convert.ToSingle(tokens[1]), () => { StartCoroutine(RotateOrbitTo(targetOrbit, Convert.ToSingle(tokens[3]),  Quaternion.Euler(Convert.ToSingle(tokens[4]), Convert.ToSingle(tokens[5]), Convert.ToSingle(tokens[6])))); }));
 
                         break;
                     case "ORBITNOTE_FIXED":
