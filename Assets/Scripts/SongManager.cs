@@ -51,6 +51,8 @@ namespace Assets.Scripts
 
         [Header("Particles")]
         public GameObject particlesOnHit;
+        public GameObject ON_particlesOnHit;
+        public GameObject TN_particlesOnHit;
         public float particlesOnHitLifespan = 0.5f;
 
         #region Readonly Variables
