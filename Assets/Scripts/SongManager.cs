@@ -153,6 +153,16 @@ namespace Assets.Scripts
             StartCoroutine(destroyParticlesAfterSeconds(particlesOnHitLifespan, Instantiate(particlesOnHit, position, rotation)));
             
         }
+
+        public void createONParticlesOnHit(Vector3 position, Quaternion rotation){
+            StartCoroutine(destroyParticlesAfterSeconds(particlesOnHitLifespan, Instantiate(ON_particlesOnHit, position, rotation)));
+            
+        }
+
+        public void createTNParticlesOnHit(Vector3 position, Quaternion rotation){
+            StartCoroutine(destroyParticlesAfterSeconds(particlesOnHitLifespan, Instantiate(TN_particlesOnHit, position, rotation)));
+            
+        }
         #endregion
 
         #region Rotation Utilities

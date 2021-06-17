@@ -3,10 +3,15 @@ using UnityEngine;
 using UnityEngine.Assertions;
 namespace Assets.Scripts
 {
+    public enum NoteType{
+        OrbitNote, TapNote
+    }
     public class NoteController : MonoBehaviour
     {
         Animator anim;
         float beatPos;
+
+        public NoteType noteType;
 
         private bool hasBeenHit = false;
 
@@ -24,7 +29,12 @@ namespace Assets.Scripts
         public void HitCheck(){
             if(hasBeenHit) return;
             hasBeenHit = true;
-            SongManager.Instance.createParticlesOnHit(transform.position, transform.rotation);
+            if(noteType == NoteType.OrbitNote){
+                SongManager.Instance.createONParticlesOnHit(transform.position, transform.rotation);
+            }
+            else {
+                SongManager.Instance.createTNParticlesOnHit(transform.position, transform.rotation);
+            }
             
             float delta = (SongManager.Instance.songPosInBeats - beatPos) / SongManager.Instance.beatsShownInAdvance;
             if(delta > 0.75 || delta < -0.5){

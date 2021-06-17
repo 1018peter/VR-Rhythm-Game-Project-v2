@@ -109,6 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b492d5aa59bb8e4aa03d8eca1e8c44b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  noteType: 1
   destroyTarget: {fileID: 569773327671558008}
 --- !u!95 &8080138369045736528
 Animator:
