@@ -29,9 +29,6 @@ namespace Assets.Scripts{
                     rightSelected = null;
                 }
             }
-            else{
-                GameManager.Instance.debugDisplay.text = "Right Confirm rejected: Nothing selected.";
-            }
         }
 
         public static void LeftConfirm(){
@@ -43,9 +40,6 @@ namespace Assets.Scripts{
                     leftSelected = null;
                     rightSelected = null;
                 }
-            }
-            else{
-                GameManager.Instance.debugDisplay.text = "Left Confirm rejected: Nothing selected.";
             }
         }
 
@@ -60,24 +54,14 @@ namespace Assets.Scripts{
         private void OnTriggerEnter(Collider other) {
             if(!activated) return;
             if(other.gameObject.name.StartsWith("Left") && leftSelected != this){
-                GameManager.Instance.debugDisplay.text = "UI Selected";
                 Debug.Log("UI Selected");
-                try{
                 onSelect.Invoke();
-                } catch(UnityException e){
-                    GameManager.Instance.debugDisplay.text = e.ToString() + ". StackTrace: " + e.StackTrace;
-                }
                 leftSelected = this;
                 widget.Activate();
             }
             else if(other.gameObject.name.StartsWith("Right") && rightSelected != this){
-                GameManager.Instance.debugDisplay.text = "UI Selected";
                 Debug.Log("UI Selected");
-                try{
                 onSelect.Invoke();
-                } catch(UnityException e){
-                    GameManager.Instance.debugDisplay.text = e.ToString() + ". StackTrace: " + e.StackTrace;
-                }
                 rightSelected = this;
                 widget.Activate();
             }
@@ -85,7 +69,6 @@ namespace Assets.Scripts{
 
         private void OnTriggerExit(Collider other) {
             
-            GameManager.Instance.debugDisplay.text = "UI Un-triggered";
             Debug.Log("UI Un-triggered");
             onDeselect.Invoke();
             if(other.gameObject.name.StartsWith("Left")){

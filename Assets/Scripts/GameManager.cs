@@ -105,12 +105,10 @@ namespace Assets.Scripts
         #region Menu State Transition Functions
 
         public void LeftConfirm(){
-            debugDisplay.text = "Left Confirm";
             OrbitUIController.LeftConfirm();
         }
 
         public void RightConfirm(){
-            debugDisplay.text = "Right Confirm";
             OrbitUIController.RightConfirm();
         }
 
@@ -245,17 +243,14 @@ namespace Assets.Scripts
                         return true;
                     }
                     else{
-                        debugDisplay.text = "Left controller not moving fast enough: " + controllerVelocity.magnitude;
                         Debug.Log("Left controller not moving fast enough: " + controllerVelocity.magnitude);
                     }
                 }
                 else{
-                    debugDisplay.text = "Left controller moving inwards";
                     Debug.Log("Left controller moving inwards");
                 }
             }
             else{
-                debugDisplay.text = "Failed to get left hand device velocity";
                 Debug.Log("Failed to get left hand device velocity");
             }
             return false;
@@ -269,17 +264,14 @@ namespace Assets.Scripts
                         return true;
                     }
                     else{
-                        debugDisplay.text = "Right controller not moving fast enough: " + controllerVelocity.magnitude;
                         Debug.Log("Right controller not moving fast enough: " + controllerVelocity.magnitude);
                     }
                 }
                 else{
-                    debugDisplay.text = "Right controller moving inwards";
                     Debug.Log("Right controller moving inwards");
                 }
             }
             else{
-                debugDisplay.text = "Failed to get right hand device velocity";
                 Debug.Log("Failed to get right hand device velocity");
             }
             return false;
@@ -296,11 +288,9 @@ namespace Assets.Scripts
             }
             else if(leftHandDevices.Count > 1)
             {
-                debugDisplay.text = "Found more than one left hand!";
                 Debug.LogError("Found more than one left hand!");
             }
             else{
-                debugDisplay.text = "No left hand found";
                 Debug.LogError("No left hand found");
             }
 
@@ -313,11 +303,9 @@ namespace Assets.Scripts
             }
             else if(rightHandDevices.Count > 1)
             {
-                debugDisplay.text += "Found more than one right hand!";
                 Debug.LogError("Found more than one right hand!");
             }
             else{
-                debugDisplay.text += "No right hand found";
                 Debug.LogError("No right hand found");
             }
 
@@ -331,11 +319,9 @@ namespace Assets.Scripts
             }
             else if(rightHandDevices.Count > 1)
             {
-                debugDisplay.text += "Found more than one center eye!";
                 Debug.LogError("Found more than one center eye!");
             }
             else{
-                debugDisplay.text += "No center eye found";
                 Debug.LogError("No center eye found");
             }
 
