@@ -99,7 +99,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: e54a250c92a151542984aee0bbc351ea,
     type: 2}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -706,7 +706,11 @@ MonoBehaviour:
   orbitNote: {fileID: 2094680578474471918, guid: cae463c5a2dbced4a842a4ed9e22a63c,
     type: 3}
   tapNote: {fileID: 569773327671558008, guid: d517c2bcde7a7b24b90f7664ff4d8e13, type: 3}
-  particlesOnHit: {fileID: 1565292474981304546, guid: 1ffaf1f2e14bc5b42ad4bb71de3fb7ba,
+  particlesOnHit: {fileID: 6828397676013225555, guid: c040b6982319e354bb22dfc29e4e30b1,
+    type: 3}
+  ON_particlesOnHit: {fileID: 3687004733582082277, guid: 32a32cbd6ba0086459bb0ecf2c4e6469,
+    type: 3}
+  TN_particlesOnHit: {fileID: 6828397676013225555, guid: c040b6982319e354bb22dfc29e4e30b1,
     type: 3}
   particlesOnHitLifespan: 0.5
   bpm: 175
