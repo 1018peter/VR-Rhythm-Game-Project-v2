@@ -36,8 +36,8 @@ namespace Assets.Scripts
                 SongManager.Instance.createTNParticlesOnHit(transform.position, transform.rotation);
             }
             
-            float delta = (SongManager.Instance.songPosInBeats - beatPos) / SongManager.Instance.beatsShownInAdvance;
-            if(delta > 0.9 || delta < -0.5){
+            float delta = 1 - (SongManager.Instance.songPosInBeats - beatPos) / SongManager.Instance.beatsShownInAdvance;
+            if(delta > 0.75 || delta < -0.5){
                 SongManager.Instance.RegisterBad();
             }
             else if(delta > 0.5 || delta < -0.3){
